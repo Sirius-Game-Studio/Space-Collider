@@ -45,6 +45,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Level 11.unity
     guid: afebd0f3eebe1a44fa78a6794a766b46
   - enabled: 1
+    path: Assets/Scenes/Level 12.unity
+    guid: 4204f65ea23e3944cb3967772e3b885a
+  - enabled: 1
+    path: Assets/Scenes/Level 13.unity
+    guid: eea0119e6d3b7da4e99dcddd9c5cdfa8
+  - enabled: 1
     path: Assets/Scenes/Endless Mode Easy.unity
     guid: a4c1e146bde5f2f48b9d79edecadacb6
   - enabled: 1

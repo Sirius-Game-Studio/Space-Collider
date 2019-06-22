@@ -72,7 +72,7 @@ public class GameController : MonoBehaviour
     private float enemySpawnZPosition = -3; //The Z position enemies must be in to spawn a separate enemy pattern
     private bool loading = false;
     private long wavesCleared = 0; //Used for when the shields should be respawned
-    private long wavesTillBoss = 6; //Only used in Endless Mode NIGHTMARE!
+    private long wavesTillBoss = 0; //Only used in Endless Mode NIGHTMARE!
     private int clickSource = 1; //1 is pause menu, 2 is game over menu, 3 is level completed menu
     private bool playedLoseJingle = false, playedWinJingle = false;
 
@@ -132,17 +132,17 @@ public class GameController : MonoBehaviour
         if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume");
         if (Input.GetKeyDown(KeyCode.Escape)) pause();
         if (Input.GetKeyDown(KeyCode.F11)) Screen.fullScreen = !Screen.fullScreen;
-        if (enemyHolder && !gameOver && !won)
+        if (!gameOver && !won)
         {
             if (enemyHolder.transform.childCount > 0)
             {
-                if (canSeparateEnemiesSpawn)
+                if (canSeparateEnemiesSpawn && separateEnemyPatterns.Length > 0)
                 {
                     foreach (Transform pattern in enemyHolder.transform)
                     {
                         foreach (Transform enemy in pattern)
                         {
-                            if (enemy.CompareTag("Enemy") && separateEnemyPatterns.Length > 0 && !enemySpawnTrigger && enemy.position.z <= enemySpawnZPosition)
+                            if (enemy.CompareTag("Enemy") && !enemySpawnTrigger && enemy.position.z <= enemySpawnZPosition)
                             {
                                 GameObject separateEnemies = Instantiate(separateEnemyPatterns[Random.Range(0, separateEnemyPatterns.Length)], new Vector3(0, 0, 19.5f), Quaternion.Euler(0, 0, 0));
                                 separateEnemies.transform.SetParent(enemyHolder.transform);
@@ -193,7 +193,7 @@ public class GameController : MonoBehaviour
                     if (difficulty >= 4) ++wavesTillBoss;
                     print("Waves to clear till shield respawn: " + wavesCleared + "/" + wavesToClearForShieldRespawn);
                 }
-                if (!gameOver && !won && !isStandard)
+                if (!gameOver && !won)
                 {
                     if (!isStandard)
                     {
@@ -272,7 +272,7 @@ public class GameController : MonoBehaviour
         {
             gameOverUI.enabled = false;
         }
-        if (!isStandard && !gameOver && won)
+        if (isStandard && !gameOver && won)
         {
             if (!restartUI.enabled && !exitToMainMenuUI.enabled && !quitGameUI.enabled) levelCompletedUI.enabled = true;
             clickSource = 3;
@@ -390,12 +390,12 @@ public class GameController : MonoBehaviour
                     if (randomPosition < 1.5f)
                     {
                         ship = Instantiate(enemyShip, new Vector3(-18, 7.5f, 0), Quaternion.Euler(-90, 0, 0));
-                        if (difficulty <= 1) ship.GetComponent<EnemyHealth>().health = 1;
+                        if (!isStandard && difficulty <= 1) ship.GetComponent<EnemyHealth>().health = 1;
                         ship.GetComponent<Mover>().speed = 5;
                     } else if (randomPosition > 1.5f)
                     {
                         ship = Instantiate(enemyShip, new Vector3(18, 7.5f, 0), Quaternion.Euler(-90, 0, 0));
-                        if (difficulty <= 1) ship.GetComponent<EnemyHealth>().health = 1;
+                        if (!isStandard && difficulty <= 1) ship.GetComponent<EnemyHealth>().health = 1;
                         ship.GetComponent<Mover>().speed = -5;
                     }
                 }
