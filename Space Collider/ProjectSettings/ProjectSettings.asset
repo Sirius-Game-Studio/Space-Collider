@@ -1,0 +1,786 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!129 &1
+PlayerSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 16
+  productGUID: 197b952a24ab15e4b831ccd83c46c780
+  AndroidProfiler: 0
+  AndroidFilterTouchesWhenObscured: 0
+  AndroidEnableSustainedPerformanceMode: 0
+  defaultScreenOrientation: 4
+  targetDevice: 2
+  useOnDemandResources: 0
+  accelerometerFrequency: 60
+  companyName: Roopkotha Studio
+  productName: Space Collider
+  defaultCursor: {fileID: 0}
+  cursorHotspot: {x: 0, y: 0}
+  m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
+  m_ShowUnitySplashScreen: 1
+  m_ShowUnitySplashLogo: 1
+  m_SplashScreenOverlayOpacity: 1
+  m_SplashScreenAnimation: 1
+  m_SplashScreenLogoStyle: 1
+  m_SplashScreenDrawMode: 0
+  m_SplashScreenBackgroundAnimationZoom: 1
+  m_SplashScreenLogoAnimationZoom: 1
+  m_SplashScreenBackgroundLandscapeAspect: 1
+  m_SplashScreenBackgroundPortraitAspect: 1
+  m_SplashScreenBackgroundLandscapeUvs:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  m_SplashScreenBackgroundPortraitUvs:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  m_SplashScreenLogos: []
+  m_VirtualRealitySplashScreen: {fileID: 0}
+  m_HolographicTrackingLossScreen: {fileID: 0}
+  defaultScreenWidth: 1024
+  defaultScreenHeight: 768
+  defaultScreenWidthWeb: 960
+  defaultScreenHeightWeb: 600
+  m_StereoRenderingPath: 0
+  m_ActiveColorSpace: 0
+  m_MTRendering: 1
+  m_StackTraceTypes: 010000000100000001000000010000000100000001000000
+  iosShowActivityIndicatorOnLoading: -1
+  androidShowActivityIndicatorOnLoading: -1
+  iosAppInBackgroundBehavior: 0
+  displayResolutionDialog: 1
+  iosAllowHTTPDownload: 1
+  allowedAutorotateToPortrait: 1
+  allowedAutorotateToPortraitUpsideDown: 1
+  allowedAutorotateToLandscapeRight: 1
+  allowedAutorotateToLandscapeLeft: 1
+  useOSAutorotation: 1
+  use32BitDisplayBuffer: 1
+  preserveFramebufferAlpha: 0
+  disableDepthAndStencilBuffers: 0
+  androidStartInFullscreen: 1
+  androidRenderOutsideSafeArea: 1
+  androidBlitType: 0
+  defaultIsNativeResolution: 1
+  macRetinaSupport: 1
+  runInBackground: 0
+  captureSingleScreen: 0
+  muteOtherAudioSources: 0
+  Prepare IOS For Recording: 0
+  Force IOS Speakers When Recording: 0
+  deferSystemGesturesMode: 0
+  hideHomeButton: 0
+  submitAnalytics: 1
+  usePlayerLog: 1
+  bakeCollisionMeshes: 1
+  forceSingleInstance: 0
+  useFlipModelSwapchain: 1
+  resizableWindow: 0
+  useMacAppStoreValidation: 0
+  macAppStoreCategory: public.app-category.games
+  gpuSkinning: 0
+  graphicsJobs: 0
+  xboxPIXTextureCapture: 0
+  xboxEnableAvatar: 0
+  xboxEnableKinect: 0
+  xboxEnableKinectAutoTracking: 0
+  xboxEnableFitness: 0
+  visibleInBackground: 1
+  allowFullscreenSwitch: 1
+  graphicsJobMode: 0
+  fullscreenMode: 1
+  xboxSpeechDB: 0
+  xboxEnableHeadOrientation: 0
+  xboxEnableGuest: 0
+  xboxEnablePIXSampling: 0
+  metalFramebufferOnly: 0
+  xboxOneResolution: 0
+  xboxOneSResolution: 0
+  xboxOneXResolution: 3
+  xboxOneMonoLoggingLevel: 0
+  xboxOneLoggingLevel: 1
+  xboxOneDisableEsram: 0
+  xboxOnePresentImmediateThreshold: 0
+  switchQueueCommandMemory: 1048576
+  switchQueueControlMemory: 16384
+  switchQueueComputeMemory: 262144
+  switchNVNShaderPoolsGranularity: 33554432
+  switchNVNDefaultPoolsGranularity: 16777216
+  switchNVNOtherPoolsGranularity: 16777216
+  vulkanEnableSetSRGBWrite: 0
+  m_SupportedAspectRatios:
+    4:3: 1
+    5:4: 1
+    16:10: 1
+    16:9: 1
+    Others: 1
+  bundleVersion: 0.7.7
+  preloadedAssets:
+  - {fileID: 7522023107725597761, guid: 7c79e3fa92c8c7d48bd48183a5494f95, type: 3}
+  - {fileID: 7522023107725597761, guid: ddaeb5e62003f7743beb6c880386db3e, type: 3}
+  - {fileID: 6278935822139811999, guid: ac3a5fe4eb9d66c47a9167f515059306, type: 3}
+  - {fileID: 6278935822139811999, guid: a81157a77ddcfec41a1ebe3152e6acb2, type: 3}
+  - {fileID: 6278935822139811999, guid: 2713bb8f19ff04c4ea67ba0cf1d28fb2, type: 3}
+  - {fileID: 6278935822139811999, guid: 8e872b9f83fae3f4289d30401c620bf8, type: 3}
+  - {fileID: 7006156074234127389, guid: 152b8240830df8e4e91d8c0436443678, type: 3}
+  - {fileID: 6278935822139811999, guid: 138c91e700edbe94285e15a3a8fb089b, type: 3}
+  - {fileID: 6278935822139811999, guid: 0fca679fa76f5074d87ee0aef93dce8d, type: 3}
+  - {fileID: 6278935822139811999, guid: bb078847c5db0d84bbaa2ed90dd776e9, type: 3}
+  - {fileID: 7522023107725597761, guid: 45a34fdc735a2304b9b5cb5eaab4bd1a, type: 3}
+  - {fileID: 6278935822139811999, guid: c2ef95b1a899eb24c8efb43abf6e8e03, type: 3}
+  - {fileID: 6278935822139811999, guid: fdd3ba28c89e07243b504935ea1e3020, type: 3}
+  - {fileID: 6278935822139811999, guid: 9c42fb70e57ece24085bc9f420edd53e, type: 3}
+  - {fileID: 6278935822139811999, guid: 24ff5896dc46ce74192be76a71cde7ba, type: 3}
+  - {fileID: 6278935822139811999, guid: f164545c330ce6745ab6eadbaf97ac93, type: 3}
+  - {fileID: 6278935822139811999, guid: 81cf89fa77fde8840bd160f27301d3f4, type: 3}
+  - {fileID: 6278935822139811999, guid: 4a4de6ade7a325747b43b0d48a37ea9f, type: 3}
+  - {fileID: 6278935822139811999, guid: 5fec2c444f570a44fa809618dc588aae, type: 3}
+  - {fileID: 6278935822139811999, guid: ae2f59cdb80bb43468d5b3069fd13511, type: 3}
+  - {fileID: 6278935822139811999, guid: 933e911a98b91834fb71612f3ea9f5e6, type: 3}
+  - {fileID: 6278935822139811999, guid: 29c8ca4b93ffd4e4eb9851aa3c48d437, type: 3}
+  - {fileID: 7522023107725597761, guid: e91a142f51f5ba54eb87e23dda5aad47, type: 3}
+  - {fileID: 7522023107725597761, guid: 6d96602f033bf5c4db1f1699b8c6222c, type: 3}
+  - {fileID: 7522023107725597761, guid: 871aa416f9830db45acdd29941036daa, type: 3}
+  - {fileID: 5457077989465668274, guid: 91ca0e49693d25a489f87104a9374067, type: 3}
+  - {fileID: 7006156074234127389, guid: 60c0a01d17bcab2449dd23a64345d862, type: 3}
+  - {fileID: 5457077989465668274, guid: d90e54c44647db040865cbcef71e1111, type: 3}
+  - {fileID: 5074802969629943729, guid: 153cfc66ce3a7c446b69fe3270972585, type: 3}
+  - {fileID: 8282597422513149686, guid: aef4c00061266f84f8793432c0a23e2b, type: 3}
+  - {fileID: 8282597422513149686, guid: f677fc96984653a4aa4f3517bff5f266, type: 3}
+  - {fileID: 100004, guid: c10851280ad2dbc4b9e93a5adadd567f, type: 3}
+  - {fileID: 100008, guid: a93496017806b7740910df5fd946f306, type: 3}
+  - {fileID: 8850636965996872902, guid: dcbbbd9e4e1252a45acc002987b26d1d, type: 3}
+  - {fileID: 4320776004538521514, guid: 3360ab24667fe6a44994b16c78bcee93, type: 3}
+  - {fileID: 4445024624703719389, guid: b1eabb56cbf673b4ba41e9e1764d70e0, type: 3}
+  - {fileID: 4445024624703719389, guid: b4d791b1d359fff42bd2af6822b20fc5, type: 3}
+  - {fileID: 4445024624703719389, guid: be7afda8f3b62ca41b38fa4664344170, type: 3}
+  - {fileID: 5170842087091804898, guid: e2ac7e08444824a4191c4f4636adc5ba, type: 3}
+  - {fileID: 7416846196992701095, guid: dffbcd659e612d84bae036b2e0aace9f, type: 3}
+  - {fileID: 4039707443999342585, guid: 67b6e725865ea9147bbb6ac7ee045d18, type: 3}
+  - {fileID: 6911200925443046539, guid: c78568f94b3a3f54a907d721462ac000, type: 3}
+  - {fileID: 1576755313528563788, guid: 1c1404911cba6f040b3598d7eb193c93, type: 3}
+  - {fileID: 3187018097097754855, guid: 936db3744bdad1e4681e5a095e8644da, type: 3}
+  - {fileID: 6008160037253290273, guid: 8dd8d942c8f0b464da0fca8c7febf2f5, type: 3}
+  - {fileID: 4743451038487515263, guid: aed4beff6efa04c48ae89e0edbec412e, type: 3}
+  - {fileID: 5170842087091804898, guid: 9c23ebe7b1a964d4885cc42efe42f836, type: 3}
+  - {fileID: 5170842087091804898, guid: b73642bd5390e804fbeba46124e3b98a, type: 3}
+  - {fileID: 2800000, guid: 35313af049b4a2f42a0325330c51d74a, type: 3}
+  - {fileID: 2800000, guid: efe6ce32a6a4408489775c70e5d32f11, type: 3}
+  - {fileID: 2800000, guid: 3e504a46a8fcec34db3c4776530c6eb2, type: 3}
+  - {fileID: 2800000, guid: 04dbc0581071c254ea6564b2ff06ff9b, type: 3}
+  - {fileID: 2800000, guid: ddcac1fac1f5c8943a30c2ef6b724062, type: 3}
+  - {fileID: 2800000, guid: 1478894bc9a1ed241b05b0862a7b8bce, type: 3}
+  - {fileID: 2800000, guid: 7e91cd9bad7babf4b975882a4b7453cb, type: 3}
+  - {fileID: 2800000, guid: 9e0d7fdc874b69a4594d0825c9ffc064, type: 3}
+  - {fileID: 2800000, guid: 1c89236d45255234ebd1d39657ff7e02, type: 3}
+  - {fileID: 2800000, guid: d9b31ebd60af68c469212c1a9f513e74, type: 3}
+  - {fileID: 21300006, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300008, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300010, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300012, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300000, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300002, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300004, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300014, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300016, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300018, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300020, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300022, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300024, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300026, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300028, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300030, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300032, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 21300034, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 2800000, guid: 1bd6c74c058d5f143a391104c445e845, type: 3}
+  - {fileID: 6586669497315175721, guid: 8e7611087b69309479e3321de426c601, type: 3}
+  - {fileID: 6586669497315175721, guid: f05f4cadc4bb1b84089f905627abe070, type: 3}
+  - {fileID: 6586669497315175721, guid: b44f14d1b599bc24f86528ce162d5bb1, type: 3}
+  - {fileID: 6586669497315175721, guid: 1c94f6f7083eb8c479211790fe20dbee, type: 3}
+  - {fileID: 19097011876126136, guid: 38dd04d45901ec34697d666636e6fb65, type: 3}
+  - {fileID: 6586669497315175721, guid: 2007b8eb4607a5547a692a81eeed400b, type: 3}
+  - {fileID: 9179432013788352277, guid: 6637b78c9c7211c459c96c4d3949d756, type: 3}
+  - {fileID: 9179432013788352277, guid: 33d2eb913ceda87438bc856ba8dd7667, type: 3}
+  - {fileID: 6586669497315175721, guid: 2614cce7691b9ab47bd76d30713cb15a, type: 3}
+  - {fileID: 6586669497315175721, guid: f27ae4588f432f64089702c8804bf6d5, type: 3}
+  - {fileID: 9179432013788352277, guid: 3c25ed866bd59474881d5e745dedce8d, type: 3}
+  - {fileID: 6586669497315175721, guid: 37c4d638d0b77b040a41b4c89bded88b, type: 3}
+  - {fileID: 6586669497315175721, guid: 0acf33af833545b4682316398d7a63b6, type: 3}
+  - {fileID: 6586669497315175721, guid: f86339a15b7edfb4b8a47483515da570, type: 3}
+  - {fileID: 6586669497315175721, guid: e16ff06c255a64e4699131eb2c019a72, type: 3}
+  - {fileID: 6586669497315175721, guid: 3aa9eb92d4603a847a854ade7b3e1631, type: 3}
+  - {fileID: 6586669497315175721, guid: a631994261832b6479ce0e421ce30431, type: 3}
+  - {fileID: 6586669497315175721, guid: dc7733f02973ada4ca92f6c4c53d1c6e, type: 3}
+  - {fileID: 6586669497315175721, guid: fbd41a19d4c73934e9f44655fbe2b1d7, type: 3}
+  - {fileID: 6586669497315175721, guid: 9f1cf6011c99f844881d026454d3f403, type: 3}
+  - {fileID: 9179432013788352277, guid: a2d1dbb0883bc574db8b2e8446a96f52, type: 3}
+  - {fileID: 6586669497315175721, guid: 5c69c8f414da2e0449ef2caf4ebeb885, type: 3}
+  - {fileID: 6586669497315175721, guid: 128520b87214e7b47b5dae7d59cbf752, type: 3}
+  - {fileID: 6586669497315175721, guid: fa8f4cbdb4d45284d9256a83f5194b7a, type: 3}
+  - {fileID: 9179432013788352277, guid: 21d14fe1dea72a94a86f53bae466ad46, type: 3}
+  - {fileID: 6586669497315175721, guid: 25b21fff1b5ae10439750052150a6920, type: 3}
+  - {fileID: 6586669497315175721, guid: 169b4692d27ba51438f31bd5541899b5, type: 3}
+  - {fileID: 6586669497315175721, guid: 0db4763d0c8ca5048aff8e1d1b9c464b, type: 3}
+  - {fileID: 6586669497315175721, guid: ca85c2d1ac3014640b4197d00cd360d7, type: 3}
+  - {fileID: 2100000, guid: df75c9f528cb5b943a7846383dca1ce8, type: 2}
+  - {fileID: 2100000, guid: 68a948edf574f51478dba19db15b7c7f, type: 2}
+  - {fileID: 2100000, guid: e109c99656ca8b448a640f35158fb290, type: 2}
+  - {fileID: 2100000, guid: 8a627c6ea727e8f4285857608ebedf3b, type: 2}
+  - {fileID: 2100000, guid: b19c86773c723b84ca302629de0474fb, type: 2}
+  - {fileID: 2100000, guid: 5cc69252ea995514c920fd6915c7cde9, type: 2}
+  - {fileID: 2100000, guid: 8fcb9c4743798e94686159a9d77b6006, type: 2}
+  - {fileID: 2100000, guid: 83fdcad436b170b43a5f16e3895caf63, type: 2}
+  - {fileID: 2100000, guid: 60b6dddd731bbc943a2d3c581189eb2a, type: 2}
+  - {fileID: 2100000, guid: f418b8efd94f26840b0ac7271dae9c46, type: 2}
+  - {fileID: 2100000, guid: 41e419b556e24a24ea5f1989f09e7a0a, type: 2}
+  - {fileID: 2100000, guid: a6087cb2ec68bf2458426241bccb1ff9, type: 2}
+  - {fileID: 2100000, guid: 1cfe02ffd0b74854ea5bcd1a3c63ac3c, type: 2}
+  - {fileID: 2100000, guid: 0ed73dc47f4cb38489020d05e9f02c99, type: 2}
+  - {fileID: 2100000, guid: 1d46a17a95a444c08830612bc1146d1d, type: 2}
+  - {fileID: 2100000, guid: b0c7cf51d3fecb446ab93bf854419715, type: 2}
+  - {fileID: 2100000, guid: 97b1f8b25cca2bc458cb9d6127c8d186, type: 2}
+  - {fileID: 2100000, guid: 0f995b3145e0e7247a42da6cef1dbf23, type: 2}
+  - {fileID: 2100000, guid: a23eef5e20ff8cb46adf33491fc443fb, type: 2}
+  - {fileID: 2100000, guid: 185f97f18bd603a478461ce9c08bd039, type: 2}
+  - {fileID: 2100000, guid: c3ec73661d6714746be01d9807818360, type: 2}
+  - {fileID: 2100000, guid: a65c71fc27c684349be7411aaee1ca38, type: 2}
+  - {fileID: 2100000, guid: 4824660e9d9e34b41a82493c13e8a51f, type: 2}
+  - {fileID: 2100000, guid: 3e1bef746b56d6b44afc55b58f43c070, type: 2}
+  - {fileID: 2100000, guid: f36a08586f1908e4093e1661bfa34286, type: 2}
+  - {fileID: 2100000, guid: d865b3a761b2ada4bb88791ab7aaa646, type: 2}
+  - {fileID: 6586669497315175721, guid: 4e4cb483c1a319f46994eaa8bee47d5e, type: 3}
+  - {fileID: 6586669497315175721, guid: 530aeb4afab2fbe4292533329f307fbd, type: 3}
+  - {fileID: 6586669497315175721, guid: 049a7a6f8251ebf41959e7a74f1fa611, type: 3}
+  - {fileID: 6586669497315175721, guid: c60d0c5d6e15fe942bc25faf2bf2fc74, type: 3}
+  - {fileID: 6586669497315175721, guid: 638f35ca87060c44992c143caa266363, type: 3}
+  - {fileID: 6586669497315175721, guid: 29aaed94ff559c0448c3e1850067788f, type: 3}
+  - {fileID: 6586669497315175721, guid: c37a988e82abc4a4794383462e4f93fa, type: 3}
+  - {fileID: 6586669497315175721, guid: 2de18c6247f38eb428e7b702029a462c, type: 3}
+  - {fileID: 6586669497315175721, guid: 497d0f253a3333d4ca08a9da4d78cfd4, type: 3}
+  - {fileID: 6586669497315175721, guid: 0e8903102bc32d54bbe31219848bb618, type: 3}
+  - {fileID: 6586669497315175721, guid: 5f697c8513014cf4199811c0e3120ca4, type: 3}
+  - {fileID: 6586669497315175721, guid: 41a84427131595b428a335e0247bc6d5, type: 3}
+  - {fileID: 6586669497315175721, guid: b9387f68125444649a68259f407c4006, type: 3}
+  - {fileID: 6586669497315175721, guid: 75e4aeab129a6ee4a8c3348929878c55, type: 3}
+  - {fileID: 6586669497315175721, guid: e79bec4c1fecc2747a0712535a3a3b11, type: 3}
+  - {fileID: 6586669497315175721, guid: 43fea06b68e892b448a4ac281ba2cdad, type: 3}
+  - {fileID: 6586669497315175721, guid: 2d3188a6f88ba5b459133381af2934af, type: 3}
+  - {fileID: 6586669497315175721, guid: 30fdf85aa7880c74aabdc1a0d70b2b4f, type: 3}
+  - {fileID: 6586669497315175721, guid: 3e031fb4157dfda4087997e985c397c1, type: 3}
+  - {fileID: 6586669497315175721, guid: 5bb0987cbf34ac046b927991598ffc92, type: 3}
+  - {fileID: 6586669497315175721, guid: dd6dea78ebbfdfd42a77692b9b726295, type: 3}
+  - {fileID: 6586669497315175721, guid: df3c6bd7c418c2e4eadcef53a3e0adf9, type: 3}
+  - {fileID: 8074131511830453990, guid: 45504e17c010e59438269d1f7f0e8049, type: 3}
+  - {fileID: 4392518987477120269, guid: c5c4a94d579bc37428e23aab43cdf19d, type: 3}
+  - {fileID: 4225065295370237319, guid: 22c3500d434668d46992670b4ec8476c, type: 3}
+  - {fileID: 100000, guid: f3b36b357c4760743ad6ab651571197f, type: 3}
+  - {fileID: 8300000, guid: 9752ee2a41017814bbb211cee30999ae, type: 3}
+  - {fileID: 8300000, guid: ba2501ab59ee5cd42a36c25a9de77968, type: 3}
+  - {fileID: 8300000, guid: 1e694d51895cc4416970222f96028f01, type: 3}
+  - {fileID: 8300000, guid: ad403fe5cb1141c4db962f01954ad170, type: 3}
+  - {fileID: 8300000, guid: 3dc7455402dfa462b89a4bbd513955e9, type: 3}
+  - {fileID: 8300000, guid: a019ae3af8e864616b85773c509f5285, type: 3}
+  - {fileID: 8300000, guid: e7127dc33f613da45b1cf0d1ab577c0d, type: 3}
+  - {fileID: 8300000, guid: 236f306a65922e2449ae83ff985aca1e, type: 3}
+  - {fileID: 8300000, guid: fcc69d596e136463999c775beed3baa8, type: 3}
+  - {fileID: 8300000, guid: 9e615a6ec1e774c0a8bfb003bbfe14ee, type: 3}
+  - {fileID: 8300000, guid: b2c88b34038081a42b4c9987aeeb2151, type: 3}
+  - {fileID: 8300000, guid: 4c424c6ee7b4fb94faf19df974f7e722, type: 3}
+  - {fileID: 8300000, guid: 8bd3e89dec7edaa43a1ac9dfc0adfc5e, type: 3}
+  - {fileID: 8300000, guid: 1be4472894949437694aead55c6da60f, type: 3}
+  - {fileID: 8300000, guid: bf75b984df8a84987bcf3a8bf6e2862d, type: 3}
+  metroInputSource: 0
+  wsaTransparentSwapchain: 0
+  m_HolographicPauseOnTrackingLoss: 1
+  xboxOneDisableKinectGpuReservation: 0
+  xboxOneEnable7thCore: 0
+  vrSettings:
+    cardboard:
+      depthFormat: 0
+      enableTransitionView: 0
+    daydream:
+      depthFormat: 0
+      useSustainedPerformanceMode: 0
+      enableVideoLayer: 0
+      useProtectedVideoMemory: 0
+      minimumSupportedHeadTracking: 0
+      maximumSupportedHeadTracking: 1
+    hololens:
+      depthFormat: 1
+      depthBufferSharingEnabled: 0
+    lumin:
+      depthFormat: 0
+      frameTiming: 2
+      enableGLCache: 0
+      glCacheMaxBlobSize: 524288
+      glCacheMaxFileSize: 8388608
+    oculus:
+      sharedDepthBuffer: 0
+      dashSupport: 0
+    enable360StereoCapture: 0
+  isWsaHolographicRemotingEnabled: 0
+  protectGraphicsMemory: 0
+  enableFrameTimingStats: 0
+  useHDRDisplay: 0
+  m_ColorGamuts: 00000000
+  targetPixelDensity: 30
+  resolutionScalingMode: 0
+  androidSupportedAspectRatio: 1
+  androidMaxAspectRatio: 2.1
+  applicationIdentifier:
+    Standalone: com.RoopkothaStudio.SpaceCollider
+  buildNumber: {}
+  AndroidBundleVersionCode: 1
+  AndroidMinSdkVersion: 16
+  AndroidTargetSdkVersion: 0
+  AndroidPreferredInstallLocation: 1
+  aotOptions: 
+  stripEngineCode: 1
+  iPhoneStrippingLevel: 0
+  iPhoneScriptCallOptimization: 0
+  ForceInternetPermission: 0
+  ForceSDCardPermission: 0
+  CreateWallpaper: 0
+  APKExpansionFiles: 0
+  keepLoadedShadersAlive: 0
+  StripUnusedMeshComponents: 0
+  VertexChannelCompressionMask: 214
+  iPhoneSdkVersion: 988
+  iOSTargetOSVersionString: 9.0
+  tvOSSdkVersion: 0
+  tvOSRequireExtendedGameController: 0
+  tvOSTargetOSVersionString: 9.0
+  uIPrerenderedIcon: 0
+  uIRequiresPersistentWiFi: 0
+  uIRequiresFullScreen: 1
+  uIStatusBarHidden: 1
+  uIExitOnSuspend: 0
+  uIStatusBarStyle: 0
+  iPhoneSplashScreen: {fileID: 0}
+  iPhoneHighResSplashScreen: {fileID: 0}
+  iPhoneTallHighResSplashScreen: {fileID: 0}
+  iPhone47inSplashScreen: {fileID: 0}
+  iPhone55inPortraitSplashScreen: {fileID: 0}
+  iPhone55inLandscapeSplashScreen: {fileID: 0}
+  iPhone58inPortraitSplashScreen: {fileID: 0}
+  iPhone58inLandscapeSplashScreen: {fileID: 0}
+  iPadPortraitSplashScreen: {fileID: 0}
+  iPadHighResPortraitSplashScreen: {fileID: 0}
+  iPadLandscapeSplashScreen: {fileID: 0}
+  iPadHighResLandscapeSplashScreen: {fileID: 0}
+  iPhone65inPortraitSplashScreen: {fileID: 0}
+  iPhone65inLandscapeSplashScreen: {fileID: 0}
+  iPhone61inPortraitSplashScreen: {fileID: 0}
+  iPhone61inLandscapeSplashScreen: {fileID: 0}
+  appleTVSplashScreen: {fileID: 0}
+  appleTVSplashScreen2x: {fileID: 0}
+  tvOSSmallIconLayers: []
+  tvOSSmallIconLayers2x: []
+  tvOSLargeIconLayers: []
+  tvOSLargeIconLayers2x: []
+  tvOSTopShelfImageLayers: []
+  tvOSTopShelfImageLayers2x: []
+  tvOSTopShelfImageWideLayers: []
+  tvOSTopShelfImageWideLayers2x: []
+  iOSLaunchScreenType: 0
+  iOSLaunchScreenPortrait: {fileID: 0}
+  iOSLaunchScreenLandscape: {fileID: 0}
+  iOSLaunchScreenBackgroundColor:
+    serializedVersion: 2
+    rgba: 0
+  iOSLaunchScreenFillPct: 100
+  iOSLaunchScreenSize: 100
+  iOSLaunchScreenCustomXibPath: 
+  iOSLaunchScreeniPadType: 0
+  iOSLaunchScreeniPadImage: {fileID: 0}
+  iOSLaunchScreeniPadBackgroundColor:
+    serializedVersion: 2
+    rgba: 0
+  iOSLaunchScreeniPadFillPct: 100
+  iOSLaunchScreeniPadSize: 100
+  iOSLaunchScreeniPadCustomXibPath: 
+  iOSUseLaunchScreenStoryboard: 0
+  iOSLaunchScreenCustomStoryboardPath: 
+  iOSDeviceRequirements: []
+  iOSURLSchemes: []
+  iOSBackgroundModes: 0
+  iOSMetalForceHardShadows: 0
+  metalEditorSupport: 1
+  metalAPIValidation: 1
+  iOSRenderExtraFrameOnPause: 0
+  appleDeveloperTeamID: 
+  iOSManualSigningProvisioningProfileID: 
+  tvOSManualSigningProvisioningProfileID: 
+  iOSManualSigningProvisioningProfileType: 0
+  tvOSManualSigningProvisioningProfileType: 0
+  appleEnableAutomaticSigning: 0
+  iOSRequireARKit: 0
+  iOSAutomaticallyDetectAndAddCapabilities: 1
+  appleEnableProMotion: 0
+  clonedFromGUID: 00000000000000000000000000000000
+  templatePackageId: 
+  templateDefaultScene: 
+  AndroidTargetArchitectures: 5
+  AndroidSplashScreenScale: 0
+  androidSplashScreen: {fileID: 0}
+  AndroidKeystoreName: '{inproject}: '
+  AndroidKeyaliasName: 
+  AndroidBuildApkPerCpuArchitecture: 0
+  AndroidTVCompatibility: 1
+  AndroidIsGame: 1
+  AndroidEnableTango: 0
+  androidEnableBanner: 1
+  androidUseLowAccuracyLocation: 0
+  androidUseCustomKeystore: 0
+  m_AndroidBanners:
+  - width: 320
+    height: 180
+    banner: {fileID: 0}
+  androidGamepadSupportLevel: 0
+  resolutionDialogBanner: {fileID: 0}
+  m_BuildTargetIcons: []
+  m_BuildTargetPlatformIcons: []
+  m_BuildTargetBatching: []
+  m_BuildTargetGraphicsAPIs: []
+  m_BuildTargetVRSettings: []
+  m_BuildTargetEnableVuforiaSettings: []
+  openGLRequireES31: 0
+  openGLRequireES31AEP: 0
+  openGLRequireES32: 0
+  m_TemplateCustomTags: {}
+  mobileMTRendering:
+    Android: 1
+    iPhone: 1
+    tvOS: 1
+  m_BuildTargetGroupLightmapEncodingQuality: []
+  m_BuildTargetGroupLightmapSettings: []
+  playModeTestRunnerEnabled: 0
+  runPlayModeTestAsEditModeTest: 0
+  actionOnDotNetUnhandledException: 1
+  enableInternalProfiler: 0
+  logObjCUncaughtExceptions: 1
+  enableCrashReportAPI: 0
+  cameraUsageDescription: 
+  locationUsageDescription: 
+  microphoneUsageDescription: 
+  switchNetLibKey: 
+  switchSocketMemoryPoolSize: 6144
+  switchSocketAllocatorPoolSize: 128
+  switchSocketConcurrencyLimit: 14
+  switchScreenResolutionBehavior: 2
+  switchUseCPUProfiler: 0
+  switchApplicationID: 0x01004b9000490000
+  switchNSODependencies: 
+  switchTitleNames_0: 
+  switchTitleNames_1: 
+  switchTitleNames_2: 
+  switchTitleNames_3: 
+  switchTitleNames_4: 
+  switchTitleNames_5: 
+  switchTitleNames_6: 
+  switchTitleNames_7: 
+  switchTitleNames_8: 
+  switchTitleNames_9: 
+  switchTitleNames_10: 
+  switchTitleNames_11: 
+  switchTitleNames_12: 
+  switchTitleNames_13: 
+  switchTitleNames_14: 
+  switchPublisherNames_0: 
+  switchPublisherNames_1: 
+  switchPublisherNames_2: 
+  switchPublisherNames_3: 
+  switchPublisherNames_4: 
+  switchPublisherNames_5: 
+  switchPublisherNames_6: 
+  switchPublisherNames_7: 
+  switchPublisherNames_8: 
+  switchPublisherNames_9: 
+  switchPublisherNames_10: 
+  switchPublisherNames_11: 
+  switchPublisherNames_12: 
+  switchPublisherNames_13: 
+  switchPublisherNames_14: 
+  switchIcons_0: {fileID: 0}
+  switchIcons_1: {fileID: 0}
+  switchIcons_2: {fileID: 0}
+  switchIcons_3: {fileID: 0}
+  switchIcons_4: {fileID: 0}
+  switchIcons_5: {fileID: 0}
+  switchIcons_6: {fileID: 0}
+  switchIcons_7: {fileID: 0}
+  switchIcons_8: {fileID: 0}
+  switchIcons_9: {fileID: 0}
+  switchIcons_10: {fileID: 0}
+  switchIcons_11: {fileID: 0}
+  switchIcons_12: {fileID: 0}
+  switchIcons_13: {fileID: 0}
+  switchIcons_14: {fileID: 0}
+  switchSmallIcons_0: {fileID: 0}
+  switchSmallIcons_1: {fileID: 0}
+  switchSmallIcons_2: {fileID: 0}
+  switchSmallIcons_3: {fileID: 0}
+  switchSmallIcons_4: {fileID: 0}
+  switchSmallIcons_5: {fileID: 0}
+  switchSmallIcons_6: {fileID: 0}
+  switchSmallIcons_7: {fileID: 0}
+  switchSmallIcons_8: {fileID: 0}
+  switchSmallIcons_9: {fileID: 0}
+  switchSmallIcons_10: {fileID: 0}
+  switchSmallIcons_11: {fileID: 0}
+  switchSmallIcons_12: {fileID: 0}
+  switchSmallIcons_13: {fileID: 0}
+  switchSmallIcons_14: {fileID: 0}
+  switchManualHTML: 
+  switchAccessibleURLs: 
+  switchLegalInformation: 
+  switchMainThreadStackSize: 1048576
+  switchPresenceGroupId: 
+  switchLogoHandling: 0
+  switchReleaseVersion: 0
+  switchDisplayVersion: 1.0.0
+  switchStartupUserAccount: 0
+  switchTouchScreenUsage: 0
+  switchSupportedLanguagesMask: 0
+  switchLogoType: 0
+  switchApplicationErrorCodeCategory: 
+  switchUserAccountSaveDataSize: 0
+  switchUserAccountSaveDataJournalSize: 0
+  switchApplicationAttribute: 0
+  switchCardSpecSize: -1
+  switchCardSpecClock: -1
+  switchRatingsMask: 0
+  switchRatingsInt_0: 0
+  switchRatingsInt_1: 0
+  switchRatingsInt_2: 0
+  switchRatingsInt_3: 0
+  switchRatingsInt_4: 0
+  switchRatingsInt_5: 0
+  switchRatingsInt_6: 0
+  switchRatingsInt_7: 0
+  switchRatingsInt_8: 0
+  switchRatingsInt_9: 0
+  switchRatingsInt_10: 0
+  switchRatingsInt_11: 0
+  switchLocalCommunicationIds_0: 
+  switchLocalCommunicationIds_1: 
+  switchLocalCommunicationIds_2: 
+  switchLocalCommunicationIds_3: 
+  switchLocalCommunicationIds_4: 
+  switchLocalCommunicationIds_5: 
+  switchLocalCommunicationIds_6: 
+  switchLocalCommunicationIds_7: 
+  switchParentalControl: 0
+  switchAllowsScreenshot: 1
+  switchAllowsVideoCapturing: 1
+  switchAllowsRuntimeAddOnContentInstall: 0
+  switchDataLossConfirmation: 0
+  switchUserAccountLockEnabled: 0
+  switchSystemResourceMemory: 16777216
+  switchSupportedNpadStyles: 3
+  switchNativeFsCacheSize: 32
+  switchIsHoldTypeHorizontal: 0
+  switchSupportedNpadCount: 8
+  switchSocketConfigEnabled: 0
+  switchTcpInitialSendBufferSize: 32
+  switchTcpInitialReceiveBufferSize: 64
+  switchTcpAutoSendBufferSizeMax: 256
+  switchTcpAutoReceiveBufferSizeMax: 256
+  switchUdpSendBufferSize: 9
+  switchUdpReceiveBufferSize: 42
+  switchSocketBufferEfficiency: 4
+  switchSocketInitializeEnabled: 1
+  switchNetworkInterfaceManagerInitializeEnabled: 1
+  switchPlayerConnectionEnabled: 1
+  ps4NPAgeRating: 12
+  ps4NPTitleSecret: 
+  ps4NPTrophyPackPath: 
+  ps4ParentalLevel: 11
+  ps4ContentID: ED1633-NPXX51362_00-0000000000000000
+  ps4Category: 0
+  ps4MasterVersion: 01.00
+  ps4AppVersion: 01.00
+  ps4AppType: 0
+  ps4ParamSfxPath: 
+  ps4VideoOutPixelFormat: 0
+  ps4VideoOutInitialWidth: 1920
+  ps4VideoOutBaseModeInitialWidth: 1920
+  ps4VideoOutReprojectionRate: 60
+  ps4PronunciationXMLPath: 
+  ps4PronunciationSIGPath: 
+  ps4BackgroundImagePath: 
+  ps4StartupImagePath: 
+  ps4StartupImagesFolder: 
+  ps4IconImagesFolder: 
+  ps4SaveDataImagePath: 
+  ps4SdkOverride: 
+  ps4BGMPath: 
+  ps4ShareFilePath: 
+  ps4ShareOverlayImagePath: 
+  ps4PrivacyGuardImagePath: 
+  ps4NPtitleDatPath: 
+  ps4RemotePlayKeyAssignment: -1
+  ps4RemotePlayKeyMappingDir: 
+  ps4PlayTogetherPlayerCount: 0
+  ps4EnterButtonAssignment: 1
+  ps4ApplicationParam1: 0
+  ps4ApplicationParam2: 0
+  ps4ApplicationParam3: 0
+  ps4ApplicationParam4: 0
+  ps4DownloadDataSize: 0
+  ps4GarlicHeapSize: 2048
+  ps4ProGarlicHeapSize: 2560
+  playerPrefsMaxSize: 32768
+  ps4Passcode: frAQBc8Wsa1xVPfvJcrgRYwTiizs2trQ
+  ps4pnSessions: 1
+  ps4pnPresence: 1
+  ps4pnFriends: 1
+  ps4pnGameCustomData: 1
+  playerPrefsSupport: 0
+  enableApplicationExit: 0
+  resetTempFolder: 1
+  restrictedAudioUsageRights: 0
+  ps4UseResolutionFallback: 0
+  ps4ReprojectionSupport: 0
+  ps4UseAudio3dBackend: 0
+  ps4SocialScreenEnabled: 0
+  ps4ScriptOptimizationLevel: 0
+  ps4Audio3dVirtualSpeakerCount: 14
+  ps4attribCpuUsage: 0
+  ps4PatchPkgPath: 
+  ps4PatchLatestPkgPath: 
+  ps4PatchChangeinfoPath: 
+  ps4PatchDayOne: 0
+  ps4attribUserManagement: 0
+  ps4attribMoveSupport: 0
+  ps4attrib3DSupport: 0
+  ps4attribShareSupport: 0
+  ps4attribExclusiveVR: 0
+  ps4disableAutoHideSplash: 0
+  ps4videoRecordingFeaturesUsed: 0
+  ps4contentSearchFeaturesUsed: 0
+  ps4attribEyeToEyeDistanceSettingVR: 0
+  ps4IncludedModules: []
+  monoEnv: 
+  splashScreenBackgroundSourceLandscape: {fileID: 0}
+  splashScreenBackgroundSourcePortrait: {fileID: 0}
+  spritePackerPolicy: 
+  webGLMemorySize: 256
+  webGLExceptionSupport: 1
+  webGLNameFilesAsHashes: 0
+  webGLDataCaching: 0
+  webGLDebugSymbols: 0
+  webGLEmscriptenArgs: 
+  webGLModulesDirectory: 
+  webGLTemplate: APPLICATION:Default
+  webGLAnalyzeBuildSize: 0
+  webGLUseEmbeddedResources: 0
+  webGLCompressionFormat: 1
+  webGLLinkerTarget: 1
+  webGLThreadsSupport: 0
+  webGLWasmStreaming: 0
+  scriptingDefineSymbols: {}
+  platformArchitecture: {}
+  scriptingBackend: {}
+  il2cppCompilerConfiguration: {}
+  managedStrippingLevel: {}
+  incrementalIl2cppBuild: {}
+  allowUnsafeCode: 0
+  additionalIl2CppArgs: 
+  scriptingRuntimeVersion: 0
+  gcIncremental: 0
+  gcWBarrierValidation: 0
+  apiCompatibilityLevelPerPlatform:
+    Standalone: 1
+  m_RenderingPath: 1
+  m_MobileRenderingPath: 1
+  metroPackageName: Unity-Gamepad-Support
+  metroPackageVersion: 
+  metroCertificatePath: 
+  metroCertificatePassword: 
+  metroCertificateSubject: 
+  metroCertificateIssuer: 
+  metroCertificateNotAfter: 0000000000000000
+  metroApplicationDescription: Unity-Gamepad-Support
+  wsaImages: {}
+  metroTileShortName: 
+  metroTileShowName: 0
+  metroMediumTileShowName: 0
+  metroLargeTileShowName: 0
+  metroWideTileShowName: 0
+  metroSupportStreamingInstall: 0
+  metroLastRequiredScene: 0
+  metroDefaultTileSize: 1
+  metroTileForegroundText: 2
+  metroTileBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21568628, a: 0}
+  metroSplashScreenBackgroundColor: {r: 0.12941177, g: 0.17254902, b: 0.21568628,
+    a: 1}
+  metroSplashScreenUseBackgroundColor: 0
+  platformCapabilities: {}
+  metroTargetDeviceFamilies: {}
+  metroFTAName: 
+  metroFTAFileTypes: []
+  metroProtocolName: 
+  XboxOneProductId: 
+  XboxOneUpdateKey: 
+  XboxOneSandboxId: 
+  XboxOneContentId: 
+  XboxOneTitleId: 
+  XboxOneSCId: 
+  XboxOneGameOsOverridePath: 
+  XboxOnePackagingOverridePath: 
+  XboxOneAppManifestOverridePath: 
+  XboxOneVersion: 1.0.0.0
+  XboxOnePackageEncryption: 0
+  XboxOnePackageUpdateGranularity: 2
+  XboxOneDescription: 
+  XboxOneLanguage:
+  - enus
+  XboxOneCapability: []
+  XboxOneGameRating: {}
+  XboxOneIsContentPackage: 0
+  XboxOneEnableGPUVariability: 0
+  XboxOneSockets: {}
+  XboxOneSplashScreen: {fileID: 0}
+  XboxOneAllowedProductIds: []
+  XboxOnePersistentLocalStorageSize: 0
+  XboxOneXTitleMemory: 8
+  xboxOneScriptCompiler: 0
+  XboxOneOverrideIdentityName: 
+  vrEditorSettings:
+    daydream:
+      daydreamIconForeground: {fileID: 0}
+      daydreamIconBackground: {fileID: 0}
+  cloudServicesEnabled: {}
+  luminIcon:
+    m_Name: 
+    m_ModelFolderPath: 
+    m_PortalFolderPath: 
+  luminCert:
+    m_CertPath: 
+    m_SignPackage: 1
+  luminIsChannelApp: 0
+  luminVersion:
+    m_VersionCode: 1
+    m_VersionName: 
+  facebookSdkVersion: 7.9.4
+  facebookAppId: 
+  facebookCookies: 1
+  facebookLogging: 1
+  facebookStatus: 1
+  facebookXfbml: 0
+  facebookFrictionlessRequests: 1
+  apiCompatibilityLevel: 2
+  cloudProjectId: 
+  framebufferDepthMemorylessMode: 0
+  projectName: 
+  organizationId: 
+  cloudEnabled: 0
+  enableNativePlatformBackendsForNewInputSystem: 0
+  disableOldInputManagerSupport: 0
+  legacyClampBlendShapeWeights: 1
