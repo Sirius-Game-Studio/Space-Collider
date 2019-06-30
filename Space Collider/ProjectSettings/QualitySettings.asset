@@ -4,7 +4,7 @@
 QualitySettings:
   m_ObjectHideFlags: 0
   serializedVersion: 5
-  m_CurrentQuality: 1
+  m_CurrentQuality: 4
   m_QualitySettings:
   - serializedVersion: 2
     name: Very Low
@@ -22,7 +22,7 @@ QualitySettings:
     textureQuality: 2
     anisotropicTextures: 0
     antiAliasing: 0
-    softParticles: 0
+    softParticles: 1
     softVegetation: 0
     realtimeReflectionProbes: 0
     billboardsFaceCameraPosition: 1
@@ -57,7 +57,7 @@ QualitySettings:
     textureQuality: 1
     anisotropicTextures: 1
     antiAliasing: 0
-    softParticles: 0
+    softParticles: 1
     softVegetation: 0
     realtimeReflectionProbes: 0
     billboardsFaceCameraPosition: 1
@@ -92,7 +92,7 @@ QualitySettings:
     textureQuality: 0
     anisotropicTextures: 2
     antiAliasing: 2
-    softParticles: 0
+    softParticles: 1
     softVegetation: 0
     realtimeReflectionProbes: 0
     billboardsFaceCameraPosition: 1
@@ -125,9 +125,9 @@ QualitySettings:
     shadowmaskMode: 0
     skinWeights: 2
     textureQuality: 0
-    anisotropicTextures: 1
+    anisotropicTextures: 2
     antiAliasing: 4
-    softParticles: 0
+    softParticles: 1
     softVegetation: 1
     realtimeReflectionProbes: 0
     billboardsFaceCameraPosition: 1
@@ -162,7 +162,7 @@ QualitySettings:
     textureQuality: 0
     anisotropicTextures: 2
     antiAliasing: 8
-    softParticles: 0
+    softParticles: 1
     softVegetation: 1
     realtimeReflectionProbes: 0
     billboardsFaceCameraPosition: 1

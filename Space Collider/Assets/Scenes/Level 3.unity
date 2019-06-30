@@ -1739,8 +1739,8 @@ MonoBehaviour:
   - {fileID: 8850636965996872902, guid: dcbbbd9e4e1252a45acc002987b26d1d, type: 3}
   - {fileID: 4320776004538521514, guid: 3360ab24667fe6a44994b16c78bcee93, type: 3}
   - {fileID: 4445024624703719389, guid: be7afda8f3b62ca41b38fa4664344170, type: 3}
+  scoreMultiplier: 0
   NIGHTMAREBosses: []
-  excludedFastPatterns: []
   gameOverJingle: {fileID: 8300000, guid: fcc69d596e136463999c775beed3baa8, type: 3}
   winJingle: {fileID: 8300000, guid: 9e615a6ec1e774c0a8bfb003bbfe14ee, type: 3}
   clickSound: {fileID: 8300000, guid: 1e694d51895cc4416970222f96028f01, type: 3}

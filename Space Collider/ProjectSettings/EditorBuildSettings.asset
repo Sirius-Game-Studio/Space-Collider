@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: b9e9861f7437393428475761a5741a5e
   - enabled: 1
-    path: Assets/Scenes/Standard Mode Ending.unity
+    path: Assets/Scenes/Campaign Ending.unity
     guid: bbf007cc67cae4e4c985b1224f6e3446
   - enabled: 1
     path: Assets/Scenes/Level 1.unity

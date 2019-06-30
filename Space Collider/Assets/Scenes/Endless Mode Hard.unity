@@ -1825,7 +1825,7 @@ MonoBehaviour:
   moveTime: {x: 0.27, y: 0.14}
   fireRate: {x: 2.7, y: 0.6}
   bulletSpeedIncrement: {x: 0, y: 3}
-  enemyShipSpawnTime: {x: 40, y: 55}
+  enemyShipSpawnTime: {x: 40, y: 50}
   asteroidSpawnTime: {x: 1, y: 8}
   powerupTime: {x: 12, y: 18}
   canSeparateEnemiesSpawn: 1
@@ -1859,6 +1859,7 @@ MonoBehaviour:
   - {fileID: 6586669497315175721, guid: 37c4d638d0b77b040a41b4c89bded88b, type: 3}
   - {fileID: 6586669497315175721, guid: 1c94f6f7083eb8c479211790fe20dbee, type: 3}
   - {fileID: 6586669497315175721, guid: ca85c2d1ac3014640b4197d00cd360d7, type: 3}
+  - {fileID: 6586669497315175721, guid: 0db4763d0c8ca5048aff8e1d1b9c464b, type: 3}
   separateEnemyPatterns:
   - {fileID: 6586669497315175721, guid: 530aeb4afab2fbe4292533329f307fbd, type: 3}
   - {fileID: 6586669497315175721, guid: 30fdf85aa7880c74aabdc1a0d70b2b4f, type: 3}
@@ -1903,8 +1904,8 @@ MonoBehaviour:
   - {fileID: 8850636965996872902, guid: dcbbbd9e4e1252a45acc002987b26d1d, type: 3}
   - {fileID: 4320776004538521514, guid: 3360ab24667fe6a44994b16c78bcee93, type: 3}
   - {fileID: 4445024624703719389, guid: be7afda8f3b62ca41b38fa4664344170, type: 3}
+  scoreMultiplier: 1.15
   NIGHTMAREBosses: []
-  excludedFastPatterns: []
   gameOverJingle: {fileID: 8300000, guid: fcc69d596e136463999c775beed3baa8, type: 3}
   winJingle: {fileID: 8300000, guid: 9e615a6ec1e774c0a8bfb003bbfe14ee, type: 3}
   clickSound: {fileID: 8300000, guid: 1e694d51895cc4416970222f96028f01, type: 3}
@@ -1960,7 +1961,7 @@ AudioSource:
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
-  BypassListenerEffects: 0
+  BypassListenerEffects: 1
   BypassReverbZones: 0
   rolloffCustomCurve:
     serializedVersion: 2

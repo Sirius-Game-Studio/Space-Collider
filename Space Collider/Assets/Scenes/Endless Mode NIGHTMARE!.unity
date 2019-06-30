@@ -1586,6 +1586,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8713297249177353619, guid: c78568f94b3a3f54a907d721462ac000,
+        type: 3}
+      propertyPath: m_Text
+      value: 2/2
+      objectReference: {fileID: 0}
     - target: {fileID: 156934855948273012, guid: c78568f94b3a3f54a907d721462ac000,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1690,11 +1695,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 8713297249177353619, guid: c78568f94b3a3f54a907d721462ac000,
-        type: 3}
-      propertyPath: m_Text
-      value: 2/2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c78568f94b3a3f54a907d721462ac000, type: 3}
@@ -1827,10 +1827,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wavesToClearForShieldRespawn: 3
-  moveTime: {x: 0.27, y: 0.14}
+  moveTime: {x: 0.265, y: 0.14}
   fireRate: {x: 2.6, y: 0.6}
   bulletSpeedIncrement: {x: 0, y: 4}
-  enemyShipSpawnTime: {x: 30, y: 45}
+  enemyShipSpawnTime: {x: 30, y: 40}
   asteroidSpawnTime: {x: 1, y: 7.5}
   powerupTime: {x: 15, y: 20}
   canSeparateEnemiesSpawn: 1
@@ -1909,14 +1909,10 @@ MonoBehaviour:
   - {fileID: 8850636965996872902, guid: dcbbbd9e4e1252a45acc002987b26d1d, type: 3}
   - {fileID: 4320776004538521514, guid: 3360ab24667fe6a44994b16c78bcee93, type: 3}
   - {fileID: 4445024624703719389, guid: be7afda8f3b62ca41b38fa4664344170, type: 3}
+  scoreMultiplier: 1.25
   NIGHTMAREBosses:
   - {fileID: 6586669497315175721, guid: 8e7611087b69309479e3321de426c601, type: 3}
   - {fileID: 6586669497315175721, guid: f05f4cadc4bb1b84089f905627abe070, type: 3}
-  excludedFastPatterns:
-  - {fileID: 6586669497315175721, guid: f27ae4588f432f64089702c8804bf6d5, type: 3}
-  - {fileID: 6586669497315175721, guid: 2614cce7691b9ab47bd76d30713cb15a, type: 3}
-  - {fileID: 6586669497315175721, guid: fbd41a19d4c73934e9f44655fbe2b1d7, type: 3}
-  - {fileID: 6586669497315175721, guid: 0acf33af833545b4682316398d7a63b6, type: 3}
   gameOverJingle: {fileID: 8300000, guid: fcc69d596e136463999c775beed3baa8, type: 3}
   winJingle: {fileID: 8300000, guid: 9e615a6ec1e774c0a8bfb003bbfe14ee, type: 3}
   clickSound: {fileID: 8300000, guid: 1e694d51895cc4416970222f96028f01, type: 3}
