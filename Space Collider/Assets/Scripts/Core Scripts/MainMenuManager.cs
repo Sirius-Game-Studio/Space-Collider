@@ -96,13 +96,13 @@ public class MainMenuManager : MonoBehaviour
         deaths.text = "Deaths: " + PlayerPrefs.GetInt("Deaths");
         if (PlayerPrefs.HasKey("StandardLevel"))
         {
-            standardProgress.text = "Level Progress: " + PlayerPrefs.GetInt("StandardLevel") + "/11";
+            standardProgress.text = "Current Level: " + PlayerPrefs.GetInt("StandardLevel");
         } else if (!PlayerPrefs.HasKey("StandardLevel") && levelHolder)
         {
-            standardProgress.text = "Level Progress: " + levelHolder.level + "/11";
+            standardProgress.text = "Current Level: " + levelHolder.level;
         } else if (!PlayerPrefs.HasKey("StandardLevel") && !levelHolder)
         {
-            standardProgress.text = "Level Progress: 1/11";
+            standardProgress.text = "Current Level: 1";
         }
         standardWins.text = "Wins: " + PlayerPrefs.GetInt("Wins");
         standardLoses.text = "Loses: " + PlayerPrefs.GetInt("Loses");

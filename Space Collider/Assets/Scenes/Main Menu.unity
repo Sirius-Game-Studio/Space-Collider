@@ -1787,7 +1787,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Are you sure you want to reset
 
-    your Standard Mode progress?'
+    your Campaign progress?'
 --- !u!222 &395215662
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3063,7 +3063,7 @@ GameObject:
   - component: {fileID: 555402574}
   - component: {fileID: 555402573}
   m_Layer: 5
-  m_Name: StandardModeRecordsButton
+  m_Name: CampaignRecordsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3086,7 +3086,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 75}
-  m_SizeDelta: {x: 258, y: 23}
+  m_SizeDelta: {x: 200, y: 23}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &555402573
 MonoBehaviour:
@@ -3188,7 +3188,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Standard Mode Records
+  m_Text: Campaign Records
 --- !u!114 &555402576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4566,7 +4566,7 @@ GameObject:
   - component: {fileID: 708131049}
   - component: {fileID: 708131048}
   m_Layer: 5
-  m_Name: EndlessModeRecordsButton
+  m_Name: SurvivalModeRecordsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4589,7 +4589,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 45}
-  m_SizeDelta: {x: 243, y: 23}
+  m_SizeDelta: {x: 247, y: 23}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &708131048
 MonoBehaviour:
@@ -4691,7 +4691,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Endless Mode Records
+  m_Text: Survival Mode Records
 --- !u!114 &708131051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5418,7 +5418,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Are you sure you want to clear
 
-    your Endless Mode high scores?'
+    your Survival Mode high scores?'
 --- !u!222 &909260397
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5440,7 +5440,7 @@ GameObject:
   - component: {fileID: 955859273}
   - component: {fileID: 955859272}
   m_Layer: 5
-  m_Name: StandardModeRecordsUI
+  m_Name: CampaignRecordsUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6113,7 +6113,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'STANDARD MODE
+  m_Text: 'CAMPAIGN
 
     RECORDS'
 --- !u!222 &1030849913
@@ -6416,7 +6416,7 @@ GameObject:
   - component: {fileID: 1097341563}
   - component: {fileID: 1097341562}
   m_Layer: 5
-  m_Name: EndlessModeRecordsUI
+  m_Name: SurvivalModeRecordsUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7020,7 +7020,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Level Progress: 1/11'
+  m_Text: 'Current Level: 1'
 --- !u!222 &1227963484
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7776,7 +7776,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'ENDLESS MODE
+  m_Text: 'SURVIVAL MODE
 
     RECORDS'
 --- !u!222 &1363505196
