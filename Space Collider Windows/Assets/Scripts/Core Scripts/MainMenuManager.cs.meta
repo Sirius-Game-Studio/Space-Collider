@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 6855170523666724a9a3b2839b64ed10
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - loadingText: {instanceID: 0}
+  - title: {instanceID: 0}
+  - developerText: {instanceID: 0}
+  - versionText: {instanceID: 0}
+  - standardProgress: {instanceID: 0}
+  - endlessHighScore: {instanceID: 0}
+  - startGameButton: {instanceID: 0}
+  - recordsButton: {instanceID: 0}
+  - quitGameButton: {instanceID: 0}
+  - mainMenuUI: {instanceID: 0}
+  - gamemodesUI: {instanceID: 0}
+  - recordsUI: {instanceID: 0}
+  - clickSound: {fileID: 8300000, guid: 1e694d51895cc4416970222f96028f01, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

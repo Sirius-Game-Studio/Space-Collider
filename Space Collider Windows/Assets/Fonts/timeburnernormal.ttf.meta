@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: d684d6ff3c821854ea00b159a734ca31
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: TimeBurner
+  fontNames:
+  - TimeBurner
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 5c55bde9f08aab54983073e163c14562, type: 3}
+  customCharacters: 
+  fontRenderingMode: 1
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

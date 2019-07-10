@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 124789f0e821cba4484a5115727642be
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - shipArmorText: {instanceID: 0}
+  - body: {instanceID: 0}
+  - bullet: {fileID: 5457077989465668274, guid: d90e54c44647db040865cbcef71e1111,
+      type: 3}
+  - explosion: {fileID: 100008, guid: a93496017806b7740910df5fd946f306, type: 3}
+  - fireSound: {fileID: 8300000, guid: fccc46974bfb74a4498b8793b264e90c, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
