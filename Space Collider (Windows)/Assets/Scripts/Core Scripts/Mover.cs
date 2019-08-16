@@ -2,9 +2,9 @@
 
 public class Mover : MonoBehaviour
 {
-    [Tooltip("How fast this object moves.")] public float speed = 0;
+    public float speed = 0;
     [Tooltip("Where the object should move towards, if it's not using transform.forward.")] [SerializeField] private Vector2 movement = Vector2.zero;
-    [Tooltip("Should this object move, using transform.forward?")] [SerializeField] private bool useForwardMovement = true;
+    [SerializeField] private bool useForwardMovement = true;
 
     void Update()
     {

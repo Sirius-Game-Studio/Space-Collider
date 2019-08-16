@@ -6,50 +6,48 @@ using UnityEngine.UI;
 struct PowerupSettings
 {
     [Header("Powerup Changes")]
-    [Tooltip("Contains BulletSpawns used by Multishot.")] public GameObject[] multishotBulletSpawns;
-    [Tooltip("Amount of damage added to the player's bullets. (used by Increased Damage)")] public long increasedDamageValue;
-    [Tooltip("Amount of armor given to the player. (used by Ship Armor)")] public long shipArmorValue;
-    [Tooltip("Amount of fire rate subtracted from the player. (used by Faster Fire Rate)")] public float fasterFiringSubtractedValue;
-    [Tooltip("Amount of speed added to the player. (used by Faster Speed)")] public float fasterSpeedAddedValue;
+    [Tooltip("Contains bullet spawns used by Multishot powerup.")] public GameObject[] multishotBulletSpawns;
+    [Tooltip("The amount of damage added after collecting this powerup.")] public long increasedDamageValue;
+    [Tooltip("The amount of armor received after collecting this powerup.")] public long shipArmorValue;
+    [Tooltip("The amount of fire rate added after collecting this powerup.")] public float fasterFiringSubtractedValue;
+    [Tooltip("The amount of speed added after collecting this powerup.")] public float fasterSpeedAddedValue;
 
     [Header("Powerup Time")]
-    [Tooltip("How long Multishot lasts for.")] public float multishotTime;
-    [Tooltip("How long Increased Damage lasts for.")] public float increasedDamageTime;
-    [Tooltip("How long Faster Firing lasts for.")] public float fasterFiringTime;
-    [Tooltip("How long Faster Speed lasts for.")] public float fasterSpeedTime;
+    public float multishotTime;
+    public float increasedDamageTime;
+    public float fasterFiringTime;
+    public float fasterSpeedTime;
 }
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Player Settings")]
-    [Tooltip("Maximum amount of lives the player can have (cannot be lower than 1).")] public long maxLives = 3;
-    [Tooltip("Amount of damage dealt to enemies (cannot be lower than 1).")] [SerializeField] private long damage = 1;
-    [Tooltip("How fast the player shoots (cannot be lower than 0.2).")] [SerializeField] private float fireRate = 0.5f;
-    [Tooltip("How fast the player moves. (cannot be lower than 0)")] [SerializeField] private float speed = 5;
-    [Tooltip("How long the invulnerability lasts for, after getting hit.")] [SerializeField] private float invulnerabilityTime = 1.6f;
+    [Tooltip("Cannot be lower than 1.")] [Range(1, 5)] public long maxLives = 3;
+    [Tooltip("Cannot be lower than 1.")] [SerializeField] private long damage = 1;
+    [Tooltip("Cannot be lower than 0.2.")] [SerializeField] private float fireRate = 0.5f;
+    [Tooltip("Ccannot be lower than 0.")] [SerializeField] private float speed = 5;
+    [SerializeField] private float invulnerabilityTime = 1.6f;
     [SerializeField] private PowerupSettings powerupSettings;
 
     [Header("UI")]
-    [SerializeField] private Text shipArmorText;
+    [SerializeField] private Text shipArmorText = null;
 
     [Header("Miscellanous")]
-    [Tooltip("Amount of lives the player starts with (is always set to max lives after loading).")] public long lives = 0;
-    [Tooltip("Amount of armor the player has (is always set to 0 after loading).")] public long armor = 0;
-    [Tooltip("Whether if the player is immune to damage or not (is always set to false after loading).")] public bool invulnerable = false;
+    public long lives = 0;
+    [Tooltip("Ship Armor.")] public long armor = 0;
+    public bool invulnerable = false;
 
     [Header("Setup")]
-    [SerializeField] private GameObject body;
-    [SerializeField] private GameObject bullet;
-    [SerializeField] private GameObject explosion;
-    [SerializeField] private AudioClip fireSound;
+    [SerializeField] private GameObject body = null;
+    [SerializeField] private GameObject bullet = null;
+    [SerializeField] private GameObject explosion = null;
+    [SerializeField] private AudioClip fireSound = null;
 
     private AudioSource audioSource;
     private GameController gameController;
     private bool hasMultishot = false, hasIncreasedDamage = false, hasfasterFiring = false, hasFasterSpeed = false;
     private bool doFadeEffect = false;
     private float nextShot = 0;
-    private Vector3 screenBounds = Vector3.zero;
-    private float width = 0;
 
     void Start()
     {
@@ -59,8 +57,6 @@ public class PlayerController : MonoBehaviour
         lives = maxLives;
         armor = 0;
         invulnerable = false;
-        screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
-        width = GetComponent<Collider>().bounds.extents.x;
     }
 
     void Update()
@@ -79,7 +75,9 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.Save();
             Destroy(gameObject);
         }
-        if (!gameController.paused && !gameController.won)
+        Vector3 screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
+        float width = GetComponent<Collider>().bounds.extents.x;
+        if (!gameController.gameOver && !gameController.won && !gameController.paused)
         {
             Vector3 movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
             movement = movement.normalized * speed * Time.deltaTime;

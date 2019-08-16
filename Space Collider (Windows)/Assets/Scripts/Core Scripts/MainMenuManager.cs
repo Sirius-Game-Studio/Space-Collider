@@ -6,33 +6,33 @@ using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
     [Header("Records Menu")]
-    [SerializeField] private Canvas recordsUI;
-    [SerializeField] private Canvas standardRecordsUI;
-    [SerializeField] private Canvas endlessRecordsUI;
-    [SerializeField] private Canvas resetProgressPrompt;
-    [SerializeField] private Canvas clearHighScorePrompt;
-    [SerializeField] private Text aliensKilled;
-    [SerializeField] private Text asteroidsDestroyed;
-    [SerializeField] private Text deaths;
-    [SerializeField] private Text standardProgress;
-    [SerializeField] private Text standardWins;
-    [SerializeField] private Text standardLoses;
-    [SerializeField] private Text endlessEasyHighScore;
-    [SerializeField] private Text endlessNormalHighScore;
-    [SerializeField] private Text endlessHardHighScore;
-    [SerializeField] private Text endlessNIGHTMAREHighScore;
+    [SerializeField] private Canvas recordsUI = null;
+    [SerializeField] private Canvas standardRecordsUI = null;
+    [SerializeField] private Canvas endlessRecordsUI = null;
+    [SerializeField] private Canvas resetProgressPrompt = null;
+    [SerializeField] private Canvas clearHighScorePrompt = null;
+    [SerializeField] private Text aliensKilled = null;
+    [SerializeField] private Text asteroidsDestroyed = null;
+    [SerializeField] private Text deaths = null;
+    [SerializeField] private Text standardProgress = null;
+    [SerializeField] private Text standardWins = null;
+    [SerializeField] private Text standardLoses = null;
+    [SerializeField] private Text endlessEasyHighScore = null;
+    [SerializeField] private Text endlessNormalHighScore = null;
+    [SerializeField] private Text endlessHardHighScore = null;
+    [SerializeField] private Text endlessNIGHTMAREHighScore = null;
 
     [Header("Settings Menu")]
-    [SerializeField] private Canvas settingsUI;
-    [SerializeField] private Slider soundSlider;
-    [SerializeField] private Slider musicSlider;
+    [SerializeField] private Canvas settingsUI = null;
+    [SerializeField] private Slider soundSlider = null;
+    [SerializeField] private Slider musicSlider = null;
 
     [Header("Setup")]
-    [SerializeField] private Canvas mainMenuUI;
-    [SerializeField] private Canvas gamemodesUI;
-    [SerializeField] private Canvas selectDifficultyUI;
-    [SerializeField] private Text loadingText;
-    [SerializeField] private AudioClip clickSound;
+    [SerializeField] private Canvas mainMenuUI = null;
+    [SerializeField] private Canvas gamemodesUI = null;
+    [SerializeField] private Canvas selectDifficultyUI = null;
+    [SerializeField] private Text loadingText = null;
+    [SerializeField] private AudioClip clickSound = null;
 
     private AudioSource audioSource;
     private bool loading = false;

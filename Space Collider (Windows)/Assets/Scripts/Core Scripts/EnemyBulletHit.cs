@@ -2,9 +2,9 @@
 
 public class EnemyBulletHit : MonoBehaviour
 {
-    [Tooltip("Amount of damage dealt to players (only affects armor).")] public long damage = 1;
+    [Tooltip("The amount of damage dealt to the player's Ship Armor.")] public long damage = 1;
     [Tooltip("Damage multiplier on Hard mode (only applies to Survival Mode).")] public float hardDamageMultiplier = 1;
-    [SerializeField] private GameObject explosion;
+    [SerializeField] private GameObject explosion = null;
 
     private GameController gameController;
 

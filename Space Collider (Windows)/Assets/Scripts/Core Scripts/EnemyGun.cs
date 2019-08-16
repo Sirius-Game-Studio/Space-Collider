@@ -9,31 +9,35 @@ public class EnemyGun : MonoBehaviour
     [Tooltip("Should this alien group shoot faster?")] public bool fast = false;
 
     [Header("Setup")]
-    [SerializeField] private GameObject bullet;
-    [SerializeField] private AudioClip fireSound;
+    [SerializeField] private GameObject bullet = null;
+    [SerializeField] private AudioClip fireSound = null;
 
     private AudioSource audioSource;
-    private GameController gameController;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        gameController = FindObjectOfType<GameController>();
-        bulletSpeed -= gameController.bulletSpeedIncrement.x;
+        bulletSpeed -= GameController.instance.enemyBulletSpeedIncrement;
         StartCoroutine(shoot());
     }
 
     void Update()
     {
         if (damage < 1) damage = 1; //Checks if damage is below 1
-        if (bulletSpeed >= 0) bulletSpeed = -12.5f; //Checks if bulletSpeed is 0 or above
+        if (bulletSpeed == 0) //Checks if bullet speed is 0
+        {
+            bulletSpeed = -12.5f;
+        } else if (bulletSpeed > 0) //Checks if bullet speed is above 0
+        {
+            bulletSpeed = -bulletSpeed;
+        }
     }
 
     IEnumerator shoot()
     {
-        while (transform.childCount > 0 && !gameController.gameOver && !gameController.won)
+        while (transform.childCount > 0 && !GameController.instance.gameOver && !GameController.instance.won)
         {
-            if (!gameController.paused)
+            if (!GameController.instance.paused)
             {
                 if (transform.position.y <= 7.5f)
                 {
@@ -41,46 +45,46 @@ public class EnemyGun : MonoBehaviour
                     {
                         if (transform.childCount > 5)
                         {
-                            yield return new WaitForSeconds(Random.Range(0.5f, gameController.fireRate.x));
+                            yield return new WaitForSeconds(Random.Range(0.5f, GameController.instance.enemyFireRate));
                         } else if (transform.childCount == 5)
                         {
-                            yield return new WaitForSeconds(Random.Range(0.5f, gameController.fireRate.x - 0.02f));
+                            yield return new WaitForSeconds(Random.Range(0.5f, GameController.instance.enemyFireRate - 0.02f));
                         } else if (transform.childCount == 4)
                         {
-                            yield return new WaitForSeconds(Random.Range(0.5f, gameController.fireRate.x - 0.04f));
+                            yield return new WaitForSeconds(Random.Range(0.5f, GameController.instance.enemyFireRate - 0.04f));
                         } else if (transform.childCount == 3)
                         {
-                            yield return new WaitForSeconds(Random.Range(0.5f, gameController.fireRate.x - 0.06f));
+                            yield return new WaitForSeconds(Random.Range(0.5f, GameController.instance.enemyFireRate - 0.06f));
                         } else if (transform.childCount == 2)
                         {
-                            yield return new WaitForSeconds(Random.Range(0.5f, gameController.fireRate.x - 0.08f));
+                            yield return new WaitForSeconds(Random.Range(0.5f, GameController.instance.enemyFireRate - 0.08f));
                         } else if (transform.childCount <= 1)
                         {
-                            yield return new WaitForSeconds(Random.Range(0.5f, gameController.fireRate.x - 0.1f));
+                            yield return new WaitForSeconds(Random.Range(0.5f, GameController.instance.enemyFireRate - 0.1f));
                         }
                     } else
                     {
                         if (transform.childCount > 5)
                         {
-                            yield return new WaitForSeconds(Random.Range(0.25f, gameController.fireRate.x - 0.035f));
+                            yield return new WaitForSeconds(Random.Range(0.25f, GameController.instance.enemyFireRate - 0.035f));
                         } else if (transform.childCount == 5)
                         {
-                            yield return new WaitForSeconds(Random.Range(0.25f, gameController.fireRate.x - 0.07f));
+                            yield return new WaitForSeconds(Random.Range(0.25f, GameController.instance.enemyFireRate - 0.07f));
                         } else if (transform.childCount == 4)
                         {
-                            yield return new WaitForSeconds(Random.Range(0.25f, gameController.fireRate.x - 0.105f));
+                            yield return new WaitForSeconds(Random.Range(0.25f, GameController.instance.enemyFireRate - 0.105f));
                         } else if (transform.childCount == 3)
                         {
-                            yield return new WaitForSeconds(Random.Range(0.25f, gameController.fireRate.x - 0.14f));
+                            yield return new WaitForSeconds(Random.Range(0.25f, GameController.instance.enemyFireRate - 0.14f));
                         } else if (transform.childCount == 2)
                         {
-                            yield return new WaitForSeconds(Random.Range(0.25f, gameController.fireRate.x - 0.175f));
+                            yield return new WaitForSeconds(Random.Range(0.25f, GameController.instance.enemyFireRate - 0.175f));
                         } else if (transform.childCount <= 1)
                         {
-                            yield return new WaitForSeconds(Random.Range(0.25f, gameController.fireRate.x - 0.21f));
+                            yield return new WaitForSeconds(Random.Range(0.25f, GameController.instance.enemyFireRate - 0.21f));
                         }
                     }
-                    if (transform.childCount > 0 && !gameController.gameOver && !gameController.won && !gameController.paused)
+                    if (transform.childCount > 0 && !GameController.instance.gameOver && !GameController.instance.won && !GameController.instance.paused)
                     {
                         //Gets children and picks a random one for shooting
                         bool foundBulletSpawns = false;
@@ -88,7 +92,7 @@ public class EnemyGun : MonoBehaviour
                         Transform enemy = enemies[Random.Range(0, enemies.Length)];
                         foreach (Transform bulletSpawn in enemy.parent.transform)
                         {
-                            if (bulletSpawn.CompareTag("BulletSpawn") && bulletSpawn.gameObject.activeSelf)
+                            if (bulletSpawn.CompareTag("BulletSpawn") && bulletSpawn.gameObject.activeSelf && enemy.transform != transform)
                             {
                                 GameObject newBullet = Instantiate(bullet, bulletSpawn.position, bulletSpawn.rotation);
                                 newBullet.transform.position = new Vector3(newBullet.transform.position.x, newBullet.transform.position.y, 0);

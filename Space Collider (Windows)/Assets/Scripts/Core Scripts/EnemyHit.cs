@@ -2,8 +2,6 @@
 
 public class EnemyHit : MonoBehaviour
 {
-    //[SerializeField] private GameObject playerExplosion;
-
     private GameController gameController;
 
     void Start()

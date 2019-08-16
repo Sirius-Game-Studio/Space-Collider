@@ -5,13 +5,16 @@ using UnityEngine.UI;
 
 public class EndingManager : MonoBehaviour
 {
-    [SerializeField] private Canvas endingUI;
-    [SerializeField] private Canvas creditsUI;
-    [SerializeField] private RectTransform credits;
-    [SerializeField] private float creditsPositionY = 400;
-    [SerializeField] private float creditsScrollSpeed = 1;
-    [SerializeField] private Text loadingText;
-    [SerializeField] private AudioClip clickSound;
+    [Header("Credits Settings")]
+    [SerializeField] private float creditsPositionY = 600;
+    [SerializeField] private float creditsScrollSpeed = 0.5f;
+
+    [Header("Setup")]
+    [SerializeField] private Canvas endingUI = null;
+    [SerializeField] private Canvas creditsUI = null;
+    [SerializeField] private RectTransform credits = null;
+    [SerializeField] private Text loadingText = null;
+    [SerializeField] private AudioClip clickSound = null;
 
     private AudioSource audioSource;
     private bool loading = false;
@@ -44,12 +47,7 @@ public class EndingManager : MonoBehaviour
     public void toMainMenu()
     {
         if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!loading)
-        {
-            loading = true;
-            endingUI.enabled = false;
-            StartCoroutine(loadScene("Main Menu"));
-        }
+        StartCoroutine(loadScene("Main Menu"));
     }
 
     public void clickCredits()
@@ -78,20 +76,26 @@ public class EndingManager : MonoBehaviour
             {
                 endingUI.enabled = true;
                 creditsUI.enabled = false;
-                StopCoroutine(scrollCredits());
+                yield break;
             }
         }
     }
 
     IEnumerator loadScene(string scene)
     {
-        AsyncOperation load = SceneManager.LoadSceneAsync(scene);
-        while (!load.isDone)
+        if (!loading)
         {
-            loadingText.text = "Loading: " + Mathf.Floor(load.progress * 100) + "%";
-            yield return null;
+            AsyncOperation load = SceneManager.LoadSceneAsync(scene);
+            loading = true;
+            while (!load.isDone)
+            {
+                loadingText.text = "Loading: " + Mathf.Floor(load.progress * 100) + "%";
+                endingUI.enabled = false;
+                creditsUI.enabled = false;
+                yield return null;
+            }
+            loading = false;
+            loadingText.text = "Loading: 0%";
         }
-        loading = false;
-        endingUI.enabled = true;
     }
 }

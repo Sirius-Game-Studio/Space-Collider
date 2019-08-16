@@ -5,7 +5,7 @@ public class ButtonHover : MonoBehaviour
 {
     [SerializeField] private Color32 normalColor = new Color32(200, 200, 200, 255);
     [SerializeField] private Color32 hoverColor = new Color32(255, 255, 255, 255);
-    [SerializeField] private Text[] textsToShow;
+    [SerializeField] private Text[] textsToShow = new Text[0];
 
     private Text text;
 

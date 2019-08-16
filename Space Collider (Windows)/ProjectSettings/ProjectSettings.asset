@@ -407,6 +407,9 @@ PlayerSettings:
   - m_BuildTarget: iPhone
     m_TextureStreamingEnabled: 0
     m_TextureStreamingPriority: 0
+  - m_BuildTarget: Standalone
+    m_TextureStreamingEnabled: 0
+    m_TextureStreamingPriority: 0
   playModeTestRunnerEnabled: 0
   runPlayModeTestAsEditModeTest: 0
   actionOnDotNetUnhandledException: 1
@@ -640,7 +643,7 @@ PlayerSettings:
   il2cppCompilerConfiguration:
     Android: 2
   managedStrippingLevel:
-    Standalone: 0
+    Standalone: 1
   incrementalIl2cppBuild: {}
   allowUnsafeCode: 0
   additionalIl2CppArgs: 

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class ToggleFullscreen : MonoBehaviour
 {
-    [SerializeField] private AudioClip clickSound;
+    [SerializeField] private AudioClip clickSound = null;
 
     private AudioSource audioSource;
     private Text fullscreenText;

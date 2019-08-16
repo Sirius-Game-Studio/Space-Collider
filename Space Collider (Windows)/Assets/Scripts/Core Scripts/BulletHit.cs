@@ -2,8 +2,8 @@
 
 public class BulletHit : MonoBehaviour
 {
-    [Tooltip("Amount of damage dealt to enemies.")] public long damage = 1;
-    [SerializeField] private GameObject explosion;
+    public long damage = 1;
+    [SerializeField] private GameObject explosion = null;
 
     void Update()
     {

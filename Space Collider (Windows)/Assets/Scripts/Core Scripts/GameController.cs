@@ -5,52 +5,49 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    public static GameController instance;
+
     [Header("Game Settings")]
-    [Tooltip("Amount of waves needed to clear for a shield group respawn (set to 0 to disable respawning).")] [SerializeField] private long wavesToClearForShieldRespawn = 0;
-    [Tooltip("How long it takes for aliens to move (X is current, Y is maximum).")] public Vector2 moveTime = new Vector2(0.3f, 0.12f);
-    [Tooltip("How long it takes for aliens to shoot (X is current, Y is maximum).")] public Vector2 fireRate = new Vector2(3, 0.6f);
-    [Tooltip("Amount of speed to add to enemy bullets (X is current, Y is maximum).")] public Vector2 bulletSpeedIncrement = new Vector2(0, 2.5f);
+    [SerializeField] private long wavesToClearForShieldRespawn = 0;
+    public float enemyMoveTime = 0.3f;
+    public float enemyFireRate = 3;
+    public float enemyBulletSpeedIncrement = 0;
+    public float maxEnemyMoveTime = 0.12f;
+    public float maxEnemyFireRate = 0.6f;
+    public float maxEnemyBulletSpeedIncrement = 2.5f;
     [SerializeField] private Vector2 enemyShipSpawnTime = new Vector2(45, 60);
     [SerializeField] private Vector2 asteroidSpawnTime = new Vector2(1, 8);
     [SerializeField] private Vector2 powerupSpawnTime = new Vector2(12, 18);
-    [SerializeField] private bool canSeparateEnemiesSpawn = true;
     [SerializeField] private bool canEnemyShipsSpawn = true;
     [SerializeField] private bool canAsteroidsSpawn = true;
-    [SerializeField] private GameObject shieldGroupToRespawn;
-    [Tooltip("List of alien groups to spawn each wave.")] [SerializeField] private GameObject[] enemyPatterns;
-    [Tooltip("List of alien groups to spawn when a enemy reaches a certain point.")] [SerializeField] private GameObject[] separateEnemyPatterns;
-    [Tooltip("Which enemy ship to spawn.")] [SerializeField] private GameObject enemyShip;
-    [Tooltip("List of asteroids to spawn.")] [SerializeField] private GameObject[] asteroids;
-    [Tooltip("List of powerups to spawn.")] [SerializeField] private GameObject[] powerups;
 
     [Header("Survival Mode-Only Settings")]
     [SerializeField] private float scoreMultiplier = 1;
     [Tooltip("1 is Easy, 2 is Normal, 3 is Hard, 4 is NIGHTMARE!.")] [Range(1, 4)] public int difficulty = 1;
-    [Tooltip("List of bosses to spawn after clearing 5 waves (only used in NIGHTMARE!).")] [SerializeField] private GameObject[] NIGHTMAREBosses;
+    [Tooltip("List of bosses to spawn after clearing 5 waves (only used in NIGHTMARE!).")] [SerializeField] private GameObject[] NIGHTMAREBosses = new GameObject[0];
 
     [Header("Sound Effects")]
-    [SerializeField] private AudioClip gameOverJingle;
-    [SerializeField] private AudioClip winJingle;
-    [SerializeField] private AudioClip clickSound;
+    [SerializeField] private AudioClip gameOverJingle = null;
+    [SerializeField] private AudioClip winJingle = null;
+    [SerializeField] private AudioClip clickSound = null;
 
     [Header("UI")]
-    [SerializeField] private GameObject gameUIMain;
-    [SerializeField] private Canvas gamePausedUI;
-    [SerializeField] private Canvas gameOverUI;
-    [SerializeField] private Canvas levelCompletedUI;
-    [SerializeField] private Canvas restartUI;
-    [SerializeField] private Canvas exitToMainMenuUI;
-    [SerializeField] private Canvas quitGameUI;
-    [SerializeField] private Canvas settingsUI;
-    [SerializeField] private Text livesCount;
-    [SerializeField] private Text levelCount;
-    [SerializeField] private Text scoreCount;
-    [SerializeField] private Text waveCount;
-    [SerializeField] private Slider soundSlider;
-    [SerializeField] private Slider musicSlider;
-    [SerializeField] private Text highScoreIndicator;
-    [SerializeField] private Text message;
-    [SerializeField] private Text loadingText;
+    [SerializeField] private GameObject gameUIMain = null;
+    [SerializeField] private Canvas gamePausedUI = null;
+    [SerializeField] private Canvas gameOverUI = null;
+    [SerializeField] private Canvas levelCompletedUI = null;
+    [SerializeField] private Canvas restartUI = null;
+    [SerializeField] private Canvas exitToMainMenuUI = null;
+    [SerializeField] private Canvas quitGameUI = null;
+    [SerializeField] private Canvas settingsUI = null;
+    [SerializeField] private Text levelCount = null;
+    [SerializeField] private Text scoreCount = null;
+    [SerializeField] private Text waveCount = null;
+    [SerializeField] private Slider soundSlider = null;
+    [SerializeField] private Slider musicSlider = null;
+    [SerializeField] private Text highScoreIndicator = null;
+    [SerializeField] private Text message = null;
+    [SerializeField] private Text loadingText = null;
 
     [Header("Miscellanous")]
     [Tooltip("Should this scene act like a Campaign level?")] public bool isStandard = false;
@@ -60,15 +57,17 @@ public class GameController : MonoBehaviour
     public bool paused = false;
 
     [Header("Setup")]
-    [SerializeField] private GameObject enemyHolder;
-    [SerializeField] private GameObject shieldGroup;
+    [SerializeField] private GameObject enemyHolder = null;
+    [SerializeField] private GameObject shieldGroup = null;
+    [SerializeField] private GameObject shieldGroupToRespawn = null;
+    [SerializeField] private GameObject[] enemyPatterns = new GameObject[0];
+    [SerializeField] private GameObject enemyShip = null;
+    [SerializeField] private GameObject[] asteroids = new GameObject[0];
+    [SerializeField] private GameObject[] powerups = new GameObject[0];
 
     private AudioSource audioSource;
-    private PlayerController playerController;
     private long score = 0;
     private long wave = 1;
-    private bool enemySpawnTrigger = false; //Checks if a separate enemy pattern was spawned
-    private float enemySpawnZPosition = -3; //The Z position enemies must be in to spawn a separate enemy pattern
     private bool loading = false;
     private long wavesCleared = 0; //Used for when the shields should be respawned
     private long wavesTillBoss = 0; //Only used in Survival Mode NIGHTMARE!
@@ -78,13 +77,20 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        } else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
         audioSource = GetComponent<AudioSource>();
-        playerController = FindObjectOfType<PlayerController>();
         gameOver = false;
-        enemySpawnZPosition = Random.Range(-3, -3.5f);
+        won = false;
+        paused = false;
         killsForLife = 0;
         Time.timeScale = 1;
-        paused = false;
+        AudioListener.pause = false;
         if (!PlayerPrefs.HasKey("SoundVolume"))
         {
             PlayerPrefs.SetFloat("SoundVolume", 1);
@@ -115,12 +121,9 @@ public class GameController : MonoBehaviour
         exitToMainMenuUI.enabled = false;
         quitGameUI.enabled = false;
         spawnEnemyPattern();
-        if (canEnemyShipsSpawn) StartCoroutine("spawnEnemyShips");
-        if (canAsteroidsSpawn) StartCoroutine("spawnAsteroids");
-        StartCoroutine("spawnPowerups");
-        print("Current enemy movement time: " + moveTime);
-        print("Current enemy fire rate: " + fireRate);
-        print("Current separate enemy spawn trigger position: " + enemySpawnZPosition);
+        if (canEnemyShipsSpawn) StartCoroutine(spawnEnemyShips());
+        if (canAsteroidsSpawn) StartCoroutine(spawnAsteroids());
+        StartCoroutine(spawnPowerups());
     }
     
     void Update()
@@ -129,103 +132,70 @@ public class GameController : MonoBehaviour
         PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
         PlayerPrefs.Save();
         if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume");
-        if (Input.GetKeyDown(KeyCode.Escape)) pause();
         if (Input.GetKeyDown(KeyCode.F11)) Screen.fullScreen = !Screen.fullScreen;
-        if (!gameOver && !won)
+        if (Input.GetKeyDown(KeyCode.Escape)) pause();
+        if (!gameOver && !won && enemyHolder.transform.childCount <= 0)
         {
-            if (enemyHolder.transform.childCount > 0)
+            if (isStandard)
             {
-                if (canSeparateEnemiesSpawn && separateEnemyPatterns.Length > 0)
-                {
-                    foreach (Transform pattern in enemyHolder.transform)
-                    {
-                        foreach (Transform enemy in pattern)
-                        {
-                            if (enemy.CompareTag("Enemy") && !enemySpawnTrigger && enemy.position.z <= enemySpawnZPosition)
-                            {
-                                GameObject separateEnemies = Instantiate(separateEnemyPatterns[Random.Range(0, separateEnemyPatterns.Length)], new Vector3(0, 0, 19.5f), Quaternion.Euler(0, 0, 0));
-                                separateEnemies.transform.SetParent(enemyHolder.transform);
-                                enemySpawnTrigger = true;
-                                print("Spawned separate enemy pattern " + separateEnemies.name + ".");
-                            }
-                        }
-                    }
-                }
-            } else if (enemyHolder.transform.childCount <= 0)
-            {
-                if (isStandard)
-                {
-                    if (wave < enemyPatterns.Length)
-                    {
-                        ++wave;
-                        ++wavesCleared;
-                        spawnEnemyPattern();
-                        print("Waves to clear till shield respawn: " + wavesCleared + "/" + wavesToClearForShieldRespawn);
-                    } else
-                    {
-                        won = true;
-                        if (!PlayerPrefs.HasKey("Wins"))
-                        {
-                            PlayerPrefs.SetString("Wins", "1");
-                        } else
-                        {
-                            long plus = long.Parse(PlayerPrefs.GetString("Wins"));
-                            ++plus;
-                            PlayerPrefs.SetString("Wins", plus.ToString());
-                        }
-                        if (PlayerPrefs.GetInt("StandardLevel") >= PlayerPrefs.GetInt("MaxCampaignLevels"))
-                        {
-                            PlayerPrefs.SetInt("StandardLevel", 1);
-                            levelCompletedUI.enabled = false;
-                            if (!loading)
-                            {
-                                loading = true;
-                                StartCoroutine(loadScene("Campaign Ending"));
-                            }
-                        }
-                        PlayerPrefs.Save();
-                    }
-                } else
+                if (wave < enemyPatterns.Length)
                 {
                     ++wave;
                     ++wavesCleared;
-                    if (difficulty >= 4) ++wavesTillBoss;
-                    scoreMultiplier += 0.01f;
                     spawnEnemyPattern();
-                    print("Waves to clear till shield respawn: " + wavesCleared + "/" + wavesToClearForShieldRespawn);
-                }
-                if (!gameOver && !won)
+                } else
                 {
-                    if (!isStandard)
+                    won = true;
+                    if (!PlayerPrefs.HasKey("Wins"))
                     {
-                        if (difficulty <= 1)
-                        {
-                            moveTime -= new Vector2(0.015f, 0);
-                            fireRate -= new Vector2(0.15f, 0);
-                            bulletSpeedIncrement -= new Vector2(0.0875f, 0);
-                        } else if (difficulty == 2)
-                        {
-                            moveTime -= new Vector2(0.02f, 0);
-                            fireRate -= new Vector2(0.2f, 0);
-                            bulletSpeedIncrement += new Vector2(0.125f, 0);
-                        } else if (difficulty == 3)
-                        {
-                            moveTime -= new Vector2(0.025f, 0);
-                            fireRate -= new Vector2(0.3f, 0);
-                            bulletSpeedIncrement -= new Vector2(0.15f, 0);
-                        } else if (difficulty >= 4)
-                        {
-                            moveTime -= new Vector2(0.035f, 0);
-                            fireRate -= new Vector2(0.4f, 0);
-                            bulletSpeedIncrement -= new Vector2(0.2f, 0);
-                        }
+                        PlayerPrefs.SetString("Wins", "1");
+                    } else
+                    {
+                        long plus = long.Parse(PlayerPrefs.GetString("Wins"));
+                        ++plus;
+                        PlayerPrefs.SetString("Wins", plus.ToString());
                     }
-                    enemySpawnTrigger = false; //Resets the enemy spawn trigger check
-                    enemySpawnZPosition = Random.Range(-3, -3.5f); //Resets the separate enemy spawn trigger position
-                    print("Current enemy fire rate: " + fireRate);
-                    print("Current separate enemy spawn trigger position: " + enemySpawnZPosition);
-                    print("Current enemy movement time: " + moveTime);
-                    if (!isStandard && difficulty >= 4) print("Waves till boss spawn: " + wavesTillBoss);
+                    if (PlayerPrefs.GetInt("StandardLevel") >= PlayerPrefs.GetInt("MaxCampaignLevels"))
+                    {
+                        PlayerPrefs.SetInt("StandardLevel", 1);
+                        levelCompletedUI.enabled = false;
+                        StartCoroutine(loadScene("Campaign Ending"));
+                    }
+                    PlayerPrefs.Save();
+                }
+            } else
+            {
+                ++wave;
+                ++wavesCleared;
+                if (difficulty >= 4) ++wavesTillBoss;
+                scoreMultiplier += 0.01f;
+                spawnEnemyPattern();
+            }
+            if (!gameOver && !won)
+            {
+                if (!isStandard)
+                {
+                    if (difficulty <= 1)
+                    {
+                        enemyMoveTime -= 0.015f;
+                        enemyFireRate -= 0.15f;
+                        enemyBulletSpeedIncrement -= 0.0875f;
+                    } else if (difficulty == 2)
+                    {
+                        enemyMoveTime -= 0.02f;
+                        enemyFireRate -= 0.2f;
+                        enemyBulletSpeedIncrement += 0.125f;
+                    } else if (difficulty == 3)
+                    {
+                        enemyMoveTime -= 0.025f;
+                        enemyFireRate -= 0.3f;
+                        enemyBulletSpeedIncrement -= 0.15f;
+                    } else if (difficulty >= 4)
+                    {
+                        enemyMoveTime -= 0.035f;
+                        enemyFireRate -= 0.4f;
+                        enemyBulletSpeedIncrement -= 0.2f;
+                    }
                 }
             }
         }
@@ -266,7 +236,6 @@ public class GameController : MonoBehaviour
                 {
                     setNewHighScore("NightmareHighScore");
                 }
-                PlayerPrefs.Save();
             }
         } else
         {
@@ -286,9 +255,9 @@ public class GameController : MonoBehaviour
         {
             levelCompletedUI.enabled = false;
         }
-        if (livesCount) livesCount.text = playerController.lives + "/" + playerController.maxLives;
-        if (levelCount)
+        if (isStandard)
         {
+            levelCount.transform.parent.gameObject.SetActive(true);
             if (PlayerPrefs.HasKey("StandardLevel"))
             {
                 levelCount.text = PlayerPrefs.GetInt("StandardLevel").ToString();
@@ -296,34 +265,14 @@ public class GameController : MonoBehaviour
             {
                 levelCount.text = "1";
             }
-            if (isStandard)
-            {
-                levelCount.transform.parent.gameObject.SetActive(true);
-            } else
-            {
-                levelCount.transform.parent.gameObject.SetActive(false);
-            }
-        }
-        if (scoreCount)
+            scoreCount.transform.parent.gameObject.SetActive(false);
+            waveCount.text = wave + "/" + enemyPatterns.Length;
+        } else
         {
+            levelCount.transform.parent.gameObject.SetActive(false);
+            scoreCount.transform.parent.gameObject.SetActive(true);
             scoreCount.text = score.ToString();
-            if (isStandard)
-            {
-                scoreCount.transform.parent.gameObject.SetActive(false);
-            } else
-            {
-                scoreCount.transform.parent.gameObject.SetActive(true);
-            }
-        }
-        if (waveCount)
-        {
-            if (isStandard)
-            {
-                waveCount.text = wave + "/" + enemyPatterns.Length;
-            } else
-            {
-                waveCount.text = wave.ToString();
-            }
+            waveCount.text = wave.ToString();
         }
         if (!loading)
         {
@@ -346,9 +295,9 @@ public class GameController : MonoBehaviour
                 gameUIMain.SetActive(false);
             }
         }
-        if (moveTime.x < moveTime.y) moveTime = new Vector2(moveTime.y, moveTime.y); //Checks if moveTime is exceeding the maximum
-        if (fireRate.x < fireRate.y) fireRate = new Vector2(fireRate.y, fireRate.y); //Checks if fireRate is exceeding the maximum
-        if (bulletSpeedIncrement.x > bulletSpeedIncrement.y) bulletSpeedIncrement = new Vector2(bulletSpeedIncrement.y, bulletSpeedIncrement.y); //Checks if bulletSpeedIncrement is exceeding the maximum
+        if (enemyMoveTime < maxEnemyMoveTime) enemyMoveTime = maxEnemyMoveTime; //Checks if enemy move time is exceeding the maximum
+        if (enemyFireRate < maxEnemyFireRate) enemyFireRate = maxEnemyFireRate; //Checks if enemy fire rate is exceeding the maximum
+        if (enemyBulletSpeedIncrement > maxEnemyBulletSpeedIncrement) enemyBulletSpeedIncrement = maxEnemyBulletSpeedIncrement; //Checks if enemy bullet speed increment is exceeding the maximum
         if (isStandard) scoreMultiplier = 0; //Checks if the gamemode being played is Campaign
         if (!isStandard && difficulty < 4) //Checks if Survival Mode is being played on difficulties below NIGHTMARE!
         {
@@ -397,11 +346,7 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-        if (pattern)
-        {
-            pattern.transform.SetParent(enemyHolder.transform);
-            print("Current enemy pattern: " + pattern.name);
-        }
+        if (pattern) pattern.transform.SetParent(enemyHolder.transform);
     }
 
     IEnumerator spawnEnemyShips()
@@ -414,13 +359,13 @@ public class GameController : MonoBehaviour
                 if (!gameOver && !won && !paused)
                 {
                     GameObject ship;
-                    float randomPosition = Random.Range(Mathf.Floor(1), Mathf.Floor(2));
-                    if (randomPosition < 1.5f)
+                    float random = Random.value;
+                    if (random <= 0.5f)
                     {
                         ship = Instantiate(enemyShip, new Vector3(-18, 7.5f, 0), Quaternion.Euler(-90, 0, 0));
                         if (!isStandard && difficulty <= 1) ship.GetComponent<EnemyHealth>().health = 1;
                         ship.GetComponent<Mover>().speed = 5;
-                    } else if (randomPosition > 1.5f)
+                    } else
                     {
                         ship = Instantiate(enemyShip, new Vector3(18, 7.5f, 0), Quaternion.Euler(-90, 0, 0));
                         if (!isStandard && difficulty <= 1) ship.GetComponent<EnemyHealth>().health = 1;
@@ -526,20 +471,19 @@ public class GameController : MonoBehaviour
     {
         if (!gameOver && !won && !settingsUI.enabled && !restartUI.enabled && !exitToMainMenuUI.enabled && !quitGameUI.enabled)
         {
-            if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
             clickSource = 1;
             if (!paused)
             {
-                Time.timeScale = 0;
                 paused = true;
+                Time.timeScale = 0;
+                AudioListener.pause = true;
                 gamePausedUI.enabled = true;
-                if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().Pause();
             } else
             {
-                Time.timeScale = 1;
                 paused = false;
+                Time.timeScale = 1;
+                AudioListener.pause = false;
                 gamePausedUI.enabled = false;
-                if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().UnPause();
             }
         }
     }
@@ -547,10 +491,10 @@ public class GameController : MonoBehaviour
     public void resumeGame()
     {
         if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        Time.timeScale = 1;
         paused = false;
+        Time.timeScale = 1;
+        AudioListener.pause = false;
         gamePausedUI.enabled = false;
-        if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().UnPause();
     }
 
     public void toNextLevel()

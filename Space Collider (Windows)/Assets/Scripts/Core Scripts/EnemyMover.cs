@@ -6,30 +6,16 @@ public class EnemyMover : MonoBehaviour
     [Tooltip("How fast the aliens will move.")] [SerializeField] private float speed = 0.5f;
     [Tooltip("Should this alien group move faster?")] public bool fast = false;
 
-    private GameController gameController;
-    private Vector3 screenBounds = Vector3.zero;
-    private float[] widths;
-
     void Start()
     {
-        gameController = FindObjectOfType<GameController>();
-        screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
-        widths = new float[transform.childCount];
-        foreach (Transform enemy in transform)
-        {
-            if (enemy.CompareTag("Enemy") && enemy.GetComponent<Collider>())
-            {
-                for (int i = 0; i < transform.childCount; i++) widths[i] = enemy.GetComponent<Collider>().bounds.extents.x;
-            }
-        }
-        StartCoroutine("move");
+        StartCoroutine(move());
     }
 
     IEnumerator move()
     {
         while (transform.childCount > 0)
         {
-            if (!gameController.paused)
+            if (!GameController.instance.paused)
             {
                 if (transform.position.y <= 7.5f)
                 {
@@ -37,66 +23,66 @@ public class EnemyMover : MonoBehaviour
                     {
                         if (transform.childCount > 5)
                         {
-                            yield return new WaitForSeconds(gameController.moveTime.x);
+                            yield return new WaitForSeconds(GameController.instance.enemyMoveTime);
                         } else if (transform.childCount == 5)
                         {
-                            yield return new WaitForSeconds(gameController.moveTime.x - 0.01f);
+                            yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.01f);
                         } else if (transform.childCount == 4)
                         {
-                            yield return new WaitForSeconds(gameController.moveTime.x - 0.02f);
+                            yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.02f);
                         } else if (transform.childCount == 3)
                         {
-                            yield return new WaitForSeconds(gameController.moveTime.x - 0.03f);
+                            yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.03f);
                         } else if (transform.childCount == 2)
                         {
-                            yield return new WaitForSeconds(gameController.moveTime.x - 0.04f);
+                            yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.04f);
                         } else if (transform.childCount <= 1)
                         {
-                            yield return new WaitForSeconds(gameController.moveTime.x - 0.05f);
+                            yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.05f);
                         }
                     } else
                     {
-                        if (gameController.moveTime.x >= 0.18f)
+                        if (GameController.instance.enemyMoveTime >= 0.18f)
                         {
                             if (transform.childCount > 5)
                             {
-                                yield return new WaitForSeconds(gameController.moveTime.x - 0.0175f);
+                                yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.0175f);
                             } else if (transform.childCount == 5)
                             {
-                                yield return new WaitForSeconds(gameController.moveTime.x - 0.035f);
+                                yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.035f);
                             } else if (transform.childCount == 4)
                             {
-                                yield return new WaitForSeconds(gameController.moveTime.x - 0.0525f);
+                                yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.0525f);
                             } else if (transform.childCount == 3)
                             {
-                                yield return new WaitForSeconds(gameController.moveTime.x - 0.07f);
+                                yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.07f);
                             } else if (transform.childCount == 2)
                             {
-                                yield return new WaitForSeconds(gameController.moveTime.x - 0.0875f);
+                                yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.0875f);
                             } else if (transform.childCount <= 1)
                             {
-                                yield return new WaitForSeconds(gameController.moveTime.x - 0.105f);
+                                yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.105f);
                             }
                         } else
                         {
                             if (transform.childCount > 5)
                             {
-                                yield return new WaitForSeconds(gameController.moveTime.x - 0.0125f);
+                                yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.0125f);
                             } else if (transform.childCount == 5)
                             {
-                                yield return new WaitForSeconds(gameController.moveTime.x - 0.025f);
+                                yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.025f);
                             } else if (transform.childCount == 4)
                             {
-                                yield return new WaitForSeconds(gameController.moveTime.x - 0.0375f);
+                                yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.0375f);
                             } else if (transform.childCount == 3)
                             {
-                                yield return new WaitForSeconds(gameController.moveTime.x - 0.05f);
+                                yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.05f);
                             } else if (transform.childCount == 2)
                             {
-                                yield return new WaitForSeconds(gameController.moveTime.x - 0.0625f);
+                                yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.0625f);
                             } else if (transform.childCount <= 1)
                             {
-                                yield return new WaitForSeconds(gameController.moveTime.x - 0.05f);
+                                yield return new WaitForSeconds(GameController.instance.enemyMoveTime - 0.05f);
                             }
                         }
                     }
@@ -106,6 +92,15 @@ public class EnemyMover : MonoBehaviour
                 }
                 if (transform.position.y <= 7.5f)
                 {
+                    Vector3 screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
+                    float[] widths = new float[transform.childCount];
+                    foreach (Transform enemy in transform)
+                    {
+                        if (enemy && enemy.CompareTag("Enemy") && enemy.GetComponent<Collider>())
+                        {
+                            for (int i = 0; i < transform.childCount; i++) widths[i] = enemy.GetComponent<Collider>().bounds.extents.x;
+                        }
+                    }
                     transform.position += Vector3.right * speed;
                     foreach (Transform enemy in transform)
                     {
