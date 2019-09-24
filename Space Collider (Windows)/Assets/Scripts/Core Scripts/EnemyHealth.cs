@@ -4,34 +4,24 @@ public class EnemyHealth : MonoBehaviour
 {
     [Header("Stats")]
     public long health = 0;
-    [Tooltip("The amount of score added when killed.")] [SerializeField] private long score = 0;
+    [SerializeField] private long score = 0;
     [Tooltip("The kills key to update (leave blank to not count towards kills).")] [SerializeField] private string killsKey = "";
 
     [Header("Additional Enemy Spawning")]
     public bool spawnEnemiesOnDeath = false;
-    [Tooltip("The amount of enemies spawned on death.")] [SerializeField] private long enemyAmount = 0;
+    [SerializeField] private long enemyAmount = 0;
     [SerializeField] private GameObject[] enemiesToSpawn = new GameObject[0];
     [SerializeField] private Vector2 randomSpawnX = Vector2.zero;
     [SerializeField] private Vector2 randomSpawnY = Vector2.zero;
 
     [Header("Extra Life")]
-    [Tooltip("Only works in Survival Mode.")] [SerializeField] private bool giveLivesOnDeath = false;
-    [Tooltip("Only works in Survival Mode.")] [SerializeField] private long livesGiven = 1;
+    [Tooltip("Only in Survival.")] [SerializeField] private bool giveLivesOnDeath = false;
+    [Tooltip("Only in Survival.")] [SerializeField] private long livesGiven = 1;
 
     [Header("Setup")]
     [SerializeField] private GameObject explosion = null;
 
-    void Start()
-    {
-        if (health <= 0) die();
-    }
-
     void Update()
-    {
-        if (livesGiven < 1) livesGiven = 1; //Checks if livesGiven is below 1
-    }
-
-    void die()
     {
         if (health <= 0)
         {
@@ -48,15 +38,15 @@ public class EnemyHealth : MonoBehaviour
                     Instantiate(enemiesToSpawn[Random.Range(0, enemiesToSpawn.Length)], transform.position + new Vector3(Random.Range(randomSpawnX.x, randomSpawnX.y), Random.Range(randomSpawnY.x, randomSpawnY.y), 0), Quaternion.Euler(Random.Range(-180, 180), -90, 90));
                 }
             }
-            if (!GameController.instance.isStandard && giveLivesOnDeath && livesGiven >= 1)
+            if (!GameController.instance.isStandard && giveLivesOnDeath && livesGiven > 0)
             {
                 PlayerController playerController = FindObjectOfType<PlayerController>();
                 if (playerController && playerController.lives > 0 && playerController.lives < playerController.maxLives)
                 {
-                    if (GameController.instance.difficulty < 4) //If current Survival Mode difficulty is below NIGHTMARE!
+                    if (GameController.instance.difficulty < 4) //If current Survival difficulty is below NIGHTMARE!
                     {
                         giveLife(playerController);
-                    } else //If current Survival Mode difficulty is NIGHTMARE!
+                    } else //If current Survival difficulty is NIGHTMARE!
                     {
                         ++GameController.instance.killsForLife;
                         if (GameController.instance.killsForLife >= 2)
@@ -95,7 +85,6 @@ public class EnemyHealth : MonoBehaviour
         {
             --health;
         }
-        if (health <= 0) die();
     }
 
     void giveLife(PlayerController playerController)
