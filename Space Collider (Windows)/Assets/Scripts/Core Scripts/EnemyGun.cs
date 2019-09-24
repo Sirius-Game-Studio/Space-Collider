@@ -86,7 +86,7 @@ public class EnemyGun : MonoBehaviour
                     }
                     if (transform.childCount > 0 && !GameController.instance.gameOver && !GameController.instance.won && !GameController.instance.paused)
                     {
-                        //Gets children and picks a random one for shooting
+                        //Gets children and picks a random one for firing
                         bool foundBulletSpawns = false;
                         Transform[] enemies = GetComponentsInChildren<Transform>();
                         Transform enemy = enemies[Random.Range(0, enemies.Length)];
@@ -114,21 +114,20 @@ public class EnemyGun : MonoBehaviour
                         {
                             if (fireSound)
                             {
-                                audioSource.PlayOneShot(fireSound, PlayerPrefs.GetFloat("SoundVolume"));
+                                audioSource.PlayOneShot(fireSound);
                             } else
                             {
-                                audioSource.volume = PlayerPrefs.GetFloat("SoundVolume");
                                 audioSource.Play();
                             }
                         }
                     }
                 } else
                 {
-                    yield return new WaitForEndOfFrame();
+                    yield return null;
                 }
             } else
             {
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
         }
     }
