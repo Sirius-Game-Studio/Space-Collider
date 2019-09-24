@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class EnemyMover : MonoBehaviour
 {
-    [Tooltip("How fast the aliens will move.")] [SerializeField] private float speed = 0.5f;
-    [Tooltip("Should this alien group move faster?")] public bool fast = false;
+    [SerializeField] private float speed = 0.5f;
+    public bool fast = false;
 
     void Start()
     {
@@ -120,7 +120,7 @@ public class EnemyMover : MonoBehaviour
                 }
             } else
             {
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
         }
     }
