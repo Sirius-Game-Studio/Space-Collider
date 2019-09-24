@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class EndingManager : MonoBehaviour
@@ -9,12 +10,15 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private float creditsPositionY = 600;
     [SerializeField] private float creditsScrollSpeed = 0.5f;
 
+    [Header("Sound Effects")]
+    [SerializeField] private AudioClip buttonClick = null;
+
     [Header("Setup")]
-    [SerializeField] private Canvas endingUI = null;
-    [SerializeField] private Canvas creditsUI = null;
+    [SerializeField] private Canvas endingMenu = null;
+    [SerializeField] private Canvas creditsMenu = null;
     [SerializeField] private RectTransform credits = null;
     [SerializeField] private Text loadingText = null;
-    [SerializeField] private AudioClip clickSound = null;
+    [SerializeField] private AudioMixer audioMixer = null;
 
     private AudioSource audioSource;
     private bool loading = false;
@@ -22,19 +26,32 @@ public class EndingManager : MonoBehaviour
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        if (audioSource) audioSource.ignoreListenerPause = true;
+        Time.timeScale = 1;
+        AudioListener.pause = false;
+        if (!PlayerPrefs.HasKey("SoundVolume"))
+        {
+            PlayerPrefs.SetFloat("SoundVolume", 1);
+        } else
+        {
+            audioMixer.SetFloat("SoundVolume", Mathf.Log10(PlayerPrefs.GetFloat("SoundVolume")) * 20);
+        }
+        if (!PlayerPrefs.HasKey("MusicVolume"))
+        {
+            PlayerPrefs.SetFloat("MusicVolume", 1);
+        } else
+        {
+            audioMixer.SetFloat("MusicVolume", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
+        }
         PlayerPrefs.SetInt("StandardLevel", 1);
         PlayerPrefs.Save();
-        if (audioSource) audioSource.volume = PlayerPrefs.GetFloat("SoundVolume");
-        if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume");
-        endingUI.enabled = true;
-        creditsUI.enabled = false;
+        endingMenu.enabled = true;
+        creditsMenu.enabled = false;
     }
 
     void Update()
     {
-        if (audioSource) audioSource.volume = PlayerPrefs.GetFloat("SoundVolume");
-        if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume");
-        if (!creditsUI.enabled) credits.anchoredPosition = new Vector2(0, creditsPositionY);
+        if (!creditsMenu.enabled) credits.anchoredPosition = new Vector2(0, creditsPositionY);
         if (!loading)
         {
             loadingText.enabled = false;
@@ -44,38 +61,56 @@ public class EndingManager : MonoBehaviour
         }
     }
 
-    public void toMainMenu()
-    {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        StartCoroutine(loadScene("Main Menu"));
-    }
-
     public void clickCredits()
     {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!creditsUI.enabled)
+        if (audioSource)
         {
-            endingUI.enabled = false;
-            creditsUI.enabled = true;
+            if (buttonClick)
+            {
+                audioSource.PlayOneShot(buttonClick);
+            } else
+            {
+                audioSource.Play();
+            }
+        }
+        if (!creditsMenu.enabled)
+        {
+            endingMenu.enabled = false;
+            creditsMenu.enabled = true;
             StartCoroutine(scrollCredits());
         } else
         {
-            endingUI.enabled = true;
-            creditsUI.enabled = false;
+            endingMenu.enabled = true;
+            creditsMenu.enabled = false;
             StopCoroutine(scrollCredits());
         }
     }
 
+    public void exitToMainMenu()
+    {
+        if (audioSource)
+        {
+            if (buttonClick)
+            {
+                audioSource.PlayOneShot(buttonClick);
+            } else
+            {
+                audioSource.Play();
+            }
+        }
+        StartCoroutine(loadScene("Main Menu"));
+    }
+
     IEnumerator scrollCredits()
     {
-        while (creditsUI.enabled)
+        while (creditsMenu.enabled)
         {
             yield return new WaitForEndOfFrame();
-            if (creditsUI.enabled) credits.anchoredPosition -= new Vector2(0, creditsScrollSpeed);
+            if (creditsMenu.enabled) credits.anchoredPosition -= new Vector2(0, creditsScrollSpeed);
             if (credits.anchoredPosition.y <= -creditsPositionY)
             {
-                endingUI.enabled = true;
-                creditsUI.enabled = false;
+                endingMenu.enabled = true;
+                creditsMenu.enabled = false;
                 yield break;
             }
         }
@@ -85,17 +120,18 @@ public class EndingManager : MonoBehaviour
     {
         if (!loading)
         {
-            AsyncOperation load = SceneManager.LoadSceneAsync(scene);
             loading = true;
+            AsyncOperation load = SceneManager.LoadSceneAsync(scene);
+            if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().Stop();
             while (!load.isDone)
             {
+                Time.timeScale = 0;
+                AudioListener.pause = true;
                 loadingText.text = "Loading: " + Mathf.Floor(load.progress * 100) + "%";
-                endingUI.enabled = false;
-                creditsUI.enabled = false;
+                endingMenu.enabled = false;
+                creditsMenu.enabled = false;
                 yield return null;
             }
-            loading = false;
-            loadingText.text = "Loading: 0%";
         }
     }
 }
