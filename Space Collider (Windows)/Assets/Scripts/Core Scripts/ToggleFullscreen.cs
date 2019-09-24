@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class ToggleFullscreen : MonoBehaviour
 {
-    [SerializeField] private AudioClip clickSound = null;
+    [SerializeField] private AudioClip buttonClick = null;
 
     private AudioSource audioSource;
     private Text fullscreenText;
@@ -29,7 +29,16 @@ public class ToggleFullscreen : MonoBehaviour
 
     public void changeFullscreen()
     {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
+        if (audioSource)
+        {
+            if (buttonClick)
+            {
+                audioSource.PlayOneShot(buttonClick);
+            } else
+            {
+                audioSource.Play();
+            }
+        }
         Screen.fullScreen = !Screen.fullScreen;
     }
 }
