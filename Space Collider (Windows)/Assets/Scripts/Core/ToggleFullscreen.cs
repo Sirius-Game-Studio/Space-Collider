@@ -3,15 +3,18 @@ using UnityEngine.UI;
 
 public class ToggleFullscreen : MonoBehaviour
 {
+    [SerializeField] private Vector2 fullscreenTextSize = new Vector2(262, 30);
+    [SerializeField] private Vector2 windowedModeTextSize = new Vector2(345, 30);
     [SerializeField] private AudioClip buttonClick = null;
 
-    private AudioSource audioSource;
     private Text fullscreenText;
+    private AudioSource audioSource;
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         fullscreenText = GetComponent<Text>();
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource) audioSource.ignoreListenerPause = true;
     }
 
     void Update()
@@ -19,11 +22,11 @@ public class ToggleFullscreen : MonoBehaviour
         if (!Screen.fullScreen)
         {
             fullscreenText.text = "Change to Fullscreen";
-            fullscreenText.rectTransform.sizeDelta = new Vector2(224, 24);
+            fullscreenText.rectTransform.sizeDelta = fullscreenTextSize;
         } else
         {
             fullscreenText.text = "Change to Windowed Mode";
-            fullscreenText.rectTransform.sizeDelta = new Vector2(297, 24);
+            fullscreenText.rectTransform.sizeDelta = windowedModeTextSize;
         }
     }
 
