@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Campaign Ending.unity
-    guid: bbf007cc67cae4e4c985b1224f6e3446
-  - enabled: 1
     path: Assets/Scenes/Main Menu.unity
     guid: b9e9861f7437393428475761a5741a5e
+  - enabled: 1
+    path: Assets/Scenes/Campaign Ending.unity
+    guid: bbf007cc67cae4e4c985b1224f6e3446
   - enabled: 1
     path: Assets/Scenes/Level 1.unity
     guid: b460b88e0c6e12f4aa2f0c20b54753c2
@@ -51,15 +51,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Level 13.unity
     guid: eea0119e6d3b7da4e99dcddd9c5cdfa8
   - enabled: 1
-    path: Assets/Scenes/Survival Mode Easy.unity
+    path: Assets/Scenes/Survival Easy.unity
     guid: a4c1e146bde5f2f48b9d79edecadacb6
   - enabled: 1
-    path: Assets/Scenes/Survival Mode Normal.unity
+    path: Assets/Scenes/Survival Normal.unity
     guid: 7789435a068a48247a519a975b47d08a
   - enabled: 1
-    path: Assets/Scenes/Survival Mode Hard.unity
+    path: Assets/Scenes/Survival Hard.unity
     guid: c57914c280c2ca845befe13884453959
   - enabled: 1
-    path: Assets/Scenes/Survival Mode NIGHTMARE!.unity
+    path: Assets/Scenes/Survival NIGHTMARE!.unity
     guid: 0469cd42c09fcee409d60304b78de385
   m_configObjects: {}
