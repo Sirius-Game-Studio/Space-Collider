@@ -1,38 +1,30 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class MainMenuManager : MonoBehaviour
 {
-    [Header("Records Menu")]
-    [SerializeField] private Canvas recordsUI = null;
-    [SerializeField] private Canvas standardRecordsUI = null;
-    [SerializeField] private Canvas endlessRecordsUI = null;
-    [SerializeField] private Canvas resetProgressPrompt = null;
-    [SerializeField] private Canvas clearHighScorePrompt = null;
-    [SerializeField] private Text aliensKilled = null;
-    [SerializeField] private Text asteroidsDestroyed = null;
-    [SerializeField] private Text deaths = null;
-    [SerializeField] private Text standardProgress = null;
-    [SerializeField] private Text standardWins = null;
-    [SerializeField] private Text standardLoses = null;
+    [Header("High Scores Menu")]
     [SerializeField] private Text endlessEasyHighScore = null;
     [SerializeField] private Text endlessNormalHighScore = null;
     [SerializeField] private Text endlessHardHighScore = null;
     [SerializeField] private Text endlessNIGHTMAREHighScore = null;
 
-    [Header("Settings Menu")]
-    [SerializeField] private Canvas settingsUI = null;
-    [SerializeField] private Slider soundSlider = null;
-    [SerializeField] private Slider musicSlider = null;
+    [Header("Sound Effects")]
+    [SerializeField] private AudioClip buttonClick = null;
 
     [Header("Setup")]
-    [SerializeField] private Canvas mainMenuUI = null;
-    [SerializeField] private Canvas gamemodesUI = null;
-    [SerializeField] private Canvas selectDifficultyUI = null;
+    [SerializeField] private Canvas mainMenu = null;
+    [SerializeField] private Canvas highScoresMenu = null;
+    [SerializeField] private Canvas settingsMenu = null;
+    [SerializeField] private Canvas gamemodesMenu = null;
+    [SerializeField] private Canvas selectDifficultyMenu = null;
+    [SerializeField] private Canvas clearHighScoresPrompt = null;
     [SerializeField] private Text loadingText = null;
-    [SerializeField] private AudioClip clickSound = null;
+    [SerializeField] private AudioMixer audioMixer = null;
 
     private AudioSource audioSource;
     private bool loading = false;
@@ -40,54 +32,35 @@ public class MainMenuManager : MonoBehaviour
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        if (audioSource) audioSource.ignoreListenerPause = true;
+        Time.timeScale = 1;
+        AudioListener.pause = false;
         if (!PlayerPrefs.HasKey("SoundVolume"))
         {
             PlayerPrefs.SetFloat("SoundVolume", 1);
             PlayerPrefs.Save();
-            soundSlider.value = 1;
         } else
         {
-            soundSlider.value = PlayerPrefs.GetFloat("SoundVolume");
+            audioMixer.SetFloat("SoundVolume", Mathf.Log10(PlayerPrefs.GetFloat("SoundVolume")) * 20);
         }
         if (!PlayerPrefs.HasKey("MusicVolume"))
         {
             PlayerPrefs.SetFloat("MusicVolume", 1);
             PlayerPrefs.Save();
-            musicSlider.value = 1;
         } else
         {
-            musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+            audioMixer.SetFloat("MusicVolume", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
         }
-        if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume");
-        mainMenuUI.enabled = true;
-        gamemodesUI.enabled = false;
-        recordsUI.enabled = false;
-        settingsUI.enabled = false;
-        selectDifficultyUI.enabled = false;
-        standardRecordsUI.enabled = false;
-        endlessRecordsUI.enabled = false;
-        resetProgressPrompt.enabled = false;
-        clearHighScorePrompt.enabled = false;
+        mainMenu.enabled = true;
+        highScoresMenu.enabled = false;
+        settingsMenu.enabled = false;
+        gamemodesMenu.enabled = false;
+        selectDifficultyMenu.enabled = false;
+        clearHighScoresPrompt.enabled = false;
     }
     
     void Update()
     {
-        PlayerPrefs.SetFloat("SoundVolume", soundSlider.value);
-        PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
-        PlayerPrefs.Save();
-        if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume");
-        updateRecord(aliensKilled, "AliensKilled", "Aliens Killed");
-        updateRecord(asteroidsDestroyed, "AsteroidsDestroyed", "Asteroids Destroyed");
-        updateRecord(deaths, "Deaths", "Deaths");
-        if (PlayerPrefs.HasKey("StandardLevel"))
-        {
-            standardProgress.text = "Current Level: " + PlayerPrefs.GetInt("StandardLevel");
-        } else
-        {
-            standardProgress.text = "Current Level: 1";
-        }
-        updateRecord(standardWins, "Wins", "Wins");
-        updateRecord(standardLoses, "Loses", "Loses");
         updateHighScore(endlessEasyHighScore, "EasyHighScore", "Easy");
         updateHighScore(endlessNormalHighScore, "NormalHighScore", "Normal");
         updateHighScore(endlessHardHighScore, "HardHighScore", "Hard");
@@ -103,212 +76,202 @@ public class MainMenuManager : MonoBehaviour
     
     public void clickPlay()
     {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!gamemodesUI.enabled)
+        if (audioSource)
         {
-            mainMenuUI.enabled = false;
-            gamemodesUI.enabled = true;
+            if (buttonClick)
+            {
+                audioSource.PlayOneShot(buttonClick);
+            } else
+            {
+                audioSource.Play();
+            }
+        }
+        if (!gamemodesMenu.enabled)
+        {
+            mainMenu.enabled = false;
+            gamemodesMenu.enabled = true;
         } else
         {
-            mainMenuUI.enabled = true;
-            gamemodesUI.enabled = false;
+            mainMenu.enabled = true;
+            gamemodesMenu.enabled = false;
         }
     }
 
-    public void clickRecords()
+    public void clickHighScores()
     {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!recordsUI.enabled)
+        if (audioSource)
         {
-            mainMenuUI.enabled = false;
-            recordsUI.enabled = true;
+            if (buttonClick)
+            {
+                audioSource.PlayOneShot(buttonClick);
+            } else
+            {
+                audioSource.Play();
+            }
+        }
+        if (!highScoresMenu.enabled)
+        {
+            mainMenu.enabled = false;
+            highScoresMenu.enabled = true;
         } else
         {
-            mainMenuUI.enabled = true;
-            recordsUI.enabled = false;
+            mainMenu.enabled = true;
+            highScoresMenu.enabled = false;
         }
     }
 
     public void clickSettings()
     {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!settingsUI.enabled)
+        if (audioSource)
         {
-            mainMenuUI.enabled = false;
-            settingsUI.enabled = true;
+            if (buttonClick)
+            {
+                audioSource.PlayOneShot(buttonClick);
+            } else
+            {
+                audioSource.Play();
+            }
+        }
+        if (!settingsMenu.enabled)
+        {
+            mainMenu.enabled = false;
+            settingsMenu.enabled = true;
         } else
         {
-            mainMenuUI.enabled = true;
-            settingsUI.enabled = false;
+            mainMenu.enabled = true;
+            settingsMenu.enabled = false;
         }
     }
 
     public void clickSurvivalMode()
     {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!selectDifficultyUI.enabled)
+        if (audioSource)
         {
-            gamemodesUI.enabled = false;
-            selectDifficultyUI.enabled = true;
+            if (buttonClick)
+            {
+                audioSource.PlayOneShot(buttonClick);
+            } else
+            {
+                audioSource.Play();
+            }
+        }
+        if (!selectDifficultyMenu.enabled)
+        {
+            gamemodesMenu.enabled = false;
+            selectDifficultyMenu.enabled = true;
         } else
         {
-            gamemodesUI.enabled = true;
-            selectDifficultyUI.enabled = false;
+            gamemodesMenu.enabled = true;
+            selectDifficultyMenu.enabled = false;
         }
     }
 
-    public void clickCampaignRecords()
-    {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!standardRecordsUI.enabled)
-        {
-            recordsUI.enabled = false;
-            standardRecordsUI.enabled = true;
-        } else
-        {
-            recordsUI.enabled = true;
-            standardRecordsUI.enabled = false;
-        }
-    }
-
-    public void clickSurvivalModeRecords()
-    {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!endlessRecordsUI.enabled)
-        {
-            recordsUI.enabled = false;
-            endlessRecordsUI.enabled = true;
-        } else
-        {
-            recordsUI.enabled = true;
-            endlessRecordsUI.enabled = false;
-        }
-    }
-
-    public void clickResetProgress()
-    {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!resetProgressPrompt.enabled)
-        {
-            standardRecordsUI.enabled = false;
-            resetProgressPrompt.enabled = true;
-        } else
-        {
-            standardRecordsUI.enabled = true;
-            resetProgressPrompt.enabled = false;
-        }
-    }
-
+    
     public void clickClearHighScore()
     {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!clearHighScorePrompt.enabled)
+        if (audioSource)
         {
-            endlessRecordsUI.enabled = false;
-            clearHighScorePrompt.enabled = true;
+            if (buttonClick)
+            {
+                audioSource.PlayOneShot(buttonClick);
+            } else
+            {
+                audioSource.Play();
+            }
         }
-        else
+        if (!clearHighScoresPrompt.enabled)
         {
-            endlessRecordsUI.enabled = true;
-            clearHighScorePrompt.enabled = false;
+            highScoresMenu.enabled = false;
+            clearHighScoresPrompt.enabled = true;
+        } else
+        {
+            highScoresMenu.enabled = true;
+            clearHighScoresPrompt.enabled = false;
         }
     }
 
     public void clickQuitGame()
     {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        Application.Quit();
-    }
-
-    public void selectCampaign()
-    {
-        if (gamemodesUI.enabled && !loading)
+        if (audioSource)
         {
-            if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-            loading = true;
-            mainMenuUI.enabled = false;
-            gamemodesUI.enabled = false;
-            recordsUI.enabled = false;
-            settingsUI.enabled = false;
-            selectDifficultyUI.enabled = false;
-            standardRecordsUI.enabled = false;
-            endlessRecordsUI.enabled = false;
-            resetProgressPrompt.enabled = false;
-            clearHighScorePrompt.enabled = false;
-            if (PlayerPrefs.HasKey("StandardLevel"))
+            if (buttonClick)
             {
-                StartCoroutine(loadScene("Level " + PlayerPrefs.GetInt("StandardLevel")));
+                audioSource.PlayOneShot(buttonClick);
             } else
             {
-                PlayerPrefs.SetInt("StandardLevel", 1);
-                PlayerPrefs.Save();
-                StartCoroutine(loadScene("Level 1"));
+                audioSource.Play();
             }
-            if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().Stop();
         }
+        Application.Quit();
+        #if UNITY_EDITOR
+            EditorApplication.isPlaying = false;
+        #endif
     }
 
-    public void selectSurvivalMode(string difficulty)
+    public void startCampaign()
     {
-        if (difficulty != "" && selectDifficultyUI.enabled && !loading)
+        if (audioSource)
         {
-            if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-            loading = true;
-            mainMenuUI.enabled = false;
-            gamemodesUI.enabled = false;
-            recordsUI.enabled = false;
-            settingsUI.enabled = false;
-            selectDifficultyUI.enabled = false;
-            standardRecordsUI.enabled = false;
-            endlessRecordsUI.enabled = false;
-            resetProgressPrompt.enabled = false;
-            clearHighScorePrompt.enabled = false;
-            if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().Stop();
-            StartCoroutine(loadScene("Survival Mode " + difficulty));
+            if (buttonClick)
+            {
+                audioSource.PlayOneShot(buttonClick);
+            } else
+            {
+                audioSource.Play();
+            }
         }
-    }
-
-    public void resetProgress()
-    {
-        if (resetProgressPrompt.enabled)
+        if (PlayerPrefs.GetInt("StandardLevel") > 0)
         {
-            if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
+            StartCoroutine(loadScene("Level " + PlayerPrefs.GetInt("StandardLevel")));
+        } else
+        {
             PlayerPrefs.SetInt("StandardLevel", 1);
             PlayerPrefs.Save();
-            resetProgressPrompt.enabled = false;
-            standardRecordsUI.enabled = true;
-            print("Campaign progress has been cleared.");
+            StartCoroutine(loadScene("Level 1"));
         }
     }
 
-    public void clearHighScore()
+    public void startSurvival(string difficulty)
     {
-        if (clearHighScorePrompt.enabled)
+        if (audioSource)
         {
-            if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-            PlayerPrefs.DeleteKey("EasyHighScore");
-            PlayerPrefs.DeleteKey("NormalHighScore");
-            PlayerPrefs.DeleteKey("HardHighScore");
-            PlayerPrefs.DeleteKey("NightmareHighScore");
-            PlayerPrefs.Save();
-            clearHighScorePrompt.enabled = false;
-            endlessRecordsUI.enabled = true;
-            print("Survival Mode high scores have been cleared.");
-        }
-    }
-
-    void updateRecord(Text main, string key, string text)
-    {
-        if (main && key != "")
-        {
-            if (PlayerPrefs.HasKey(key))
+            if (buttonClick)
             {
-                main.text = text + ": " + PlayerPrefs.GetString(key);
+                audioSource.PlayOneShot(buttonClick);
             } else
             {
-                main.text = text + ": 0";
+                audioSource.Play();
             }
         }
+        if (difficulty != "")
+        {
+            StartCoroutine(loadScene("Survival " + difficulty));
+        } else
+        {
+            StartCoroutine(loadScene("Survival Normal"));
+        }
+    }
+
+
+    public void clearHighScores()
+    {
+        if (audioSource)
+        {
+            if (buttonClick)
+            {
+                audioSource.PlayOneShot(buttonClick);
+            } else
+            {
+                audioSource.Play();
+            }
+        }
+        PlayerPrefs.DeleteKey("EasyHighScore");
+        PlayerPrefs.DeleteKey("NormalHighScore");
+        PlayerPrefs.DeleteKey("HardHighScore");
+        PlayerPrefs.DeleteKey("NightmareHighScore");
+        PlayerPrefs.Save();
+        clearHighScoresPrompt.enabled = false;
+        highScoresMenu.enabled = true;
     }
 
     void updateHighScore(Text main, string key, string difficulty)
@@ -327,13 +290,24 @@ public class MainMenuManager : MonoBehaviour
 
     IEnumerator loadScene(string scene)
     {
-        AsyncOperation load = SceneManager.LoadSceneAsync(scene);
-        while (!load.isDone)
+        if (!loading)
         {
-            loadingText.text = "Loading: " + Mathf.Floor(load.progress * 100) + "%";
-            yield return null;
+            loading = true;
+            AsyncOperation load = SceneManager.LoadSceneAsync(scene);
+            if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().Stop();
+            while (!load.isDone)
+            {
+                Time.timeScale = 0;
+                AudioListener.pause = true;
+                loadingText.text = "Loading: " + Mathf.Floor(load.progress * 100) + "%";
+                mainMenu.enabled = false;
+                highScoresMenu.enabled = false;
+                settingsMenu.enabled = false;
+                gamemodesMenu.enabled = false;
+                selectDifficultyMenu.enabled = false;
+                clearHighScoresPrompt.enabled = false;
+                yield return null;
+            }
         }
-        loading = false;
-        mainMenuUI.enabled = true;
     }
 }
