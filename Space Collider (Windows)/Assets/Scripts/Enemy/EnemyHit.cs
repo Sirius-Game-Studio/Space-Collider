@@ -2,16 +2,9 @@
 
 public class EnemyHit : MonoBehaviour
 {
-    private GameController gameController;
-
-    void Start()
-    {
-        gameController = FindObjectOfType<GameController>();
-    }
-
     void OnTriggerStay(Collider other)
     {
-        if (!gameController.won)
+        if (!GameController.instance.gameOver)
         {
             PlayerController playerController = other.GetComponent<PlayerController>();
             ShieldHealth shieldHealth = other.GetComponent<ShieldHealth>();
