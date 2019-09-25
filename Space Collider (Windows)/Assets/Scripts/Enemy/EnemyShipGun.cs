@@ -13,20 +13,17 @@ public class EnemyShipGun : MonoBehaviour
     [SerializeField] private AudioClip fireSound = null;
 
     private AudioSource audioSource;
-    private GameController gameController;
     private float nextShot = 0;
 
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        gameController = FindObjectOfType<GameController>();
-        if (!gameController.isStandard)
+        if (!GameController.instance.isCampaign)
         {
-            if (gameController.difficulty <= 1) // Easy
+            if (GameController.instance.difficulty <= 1) // Easy
             {
                 fireRate += 0.025f;
-            }
-            else if (gameController.difficulty >= 3) //Hard & NIGHTMARE!
+            } else if (GameController.instance.difficulty >= 3) //Hard & NIGHTMARE!
             {
                 fireRate -= 0.025f;
             }
@@ -35,7 +32,7 @@ public class EnemyShipGun : MonoBehaviour
 
     void Update()
     {
-        if (!gameController.gameOver && !gameController.won && !gameController.paused)
+        if (!GameController.instance.gameOver && !GameController.instance.won && !GameController.instance.paused)
         {
             if (nextShot < fireRate)
             {
@@ -68,10 +65,9 @@ public class EnemyShipGun : MonoBehaviour
                 {
                     if (fireSound)
                     {
-                        audioSource.PlayOneShot(fireSound, PlayerPrefs.GetFloat("SoundVolume"));
+                        audioSource.PlayOneShot(fireSound);
                     } else
                     {
-                        audioSource.volume = PlayerPrefs.GetFloat("SoundVolume");
                         audioSource.Play();
                     }
                 }
