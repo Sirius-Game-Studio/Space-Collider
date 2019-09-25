@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 124789f0e821cba4484a5115727642be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLives: 3
+  lives: 3
   damage: 1
   fireRate: 0.5
   speed: 6
@@ -253,7 +253,6 @@ MonoBehaviour:
     fasterFiringTime: 8
     fasterSpeedTime: 10
   shipArmorText: {fileID: 0}
-  lives: 0
   armor: 0
   invulnerable: 0
   body: {fileID: 7786785309139180236}
@@ -355,6 +354,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
