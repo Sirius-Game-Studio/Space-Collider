@@ -1,29 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-/*
-Blink (NIGHTMARE!-Only Ability):
-Randomly disappears and then reappears (time varies).
-*/
-
 public class Blink : MonoBehaviour
 {
-    private GameController gameController;
-
     void Start()
     {
-        gameController = FindObjectOfType<GameController>();
-        if (!CompareTag("Enemy"))
-        {
-            Debug.LogError("GameObject " + name + " is not tagged as Enemy!");
-            return;
-        }
-        if (gameController.isStandard) return;
-        if (!gameController.isStandard && gameController.difficulty < 4) return;
-        StartCoroutine(ability());
+        if (!GameController.instance.isCampaign && GameController.instance.difficulty >= 4) StartCoroutine(main());
     }
 
-    IEnumerator ability() //Ability code
+    IEnumerator main()
     {
         while (true)
         {
