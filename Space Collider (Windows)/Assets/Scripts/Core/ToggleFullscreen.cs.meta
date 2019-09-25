@@ -4,7 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - clickSound: {fileID: 8300000, guid: 1e694d51895cc4416970222f96028f01, type: 3}
+  - buttonClick: {fileID: 8300000, guid: 1e694d51895cc4416970222f96028f01, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
