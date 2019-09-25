@@ -21,20 +21,19 @@ struct PowerupSettings
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Player Settings")]
-    [Tooltip("Cannot be lower than 1.")] [Range(1, 5)] public long maxLives = 3;
-    [Tooltip("Cannot be lower than 1.")] [SerializeField] private long damage = 1;
-    [Tooltip("Cannot be lower than 0.2.")] [SerializeField] private float fireRate = 0.5f;
-    [Tooltip("Ccannot be lower than 0.")] [SerializeField] private float speed = 5;
+    [Header("Settings")]
+    [Range(1, 5)] public long lives = 0;
+    [Range(1, 3)] [SerializeField] private long damage = 1;
+    [SerializeField] private float fireRate = 0.5f;
+    [SerializeField] private float speed = 5;
     [SerializeField] private float invulnerabilityTime = 1.6f;
     [SerializeField] private PowerupSettings powerupSettings;
 
     [Header("UI")]
     [SerializeField] private Text shipArmorText = null;
 
-    [Header("Miscellanous")]
-    public long lives = 0;
-    [Tooltip("Ship Armor.")] public long armor = 0;
+    [Header("Miscellaneous")]
+    [Tooltip("Ship Armor health.")] public long armor = 0;
     public bool invulnerable = false;
 
     [Header("Setup")]
@@ -44,7 +43,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioClip fireSound = null;
 
     private AudioSource audioSource;
-    private GameController gameController;
+    private Text livesCount;
     private bool hasMultishot = false, hasIncreasedDamage = false, hasfasterFiring = false, hasFasterSpeed = false;
     private bool doFadeEffect = false;
     private float nextShot = 0;
@@ -52,32 +51,35 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        gameController = FindObjectOfType<GameController>();
-        if (maxLives < 1) maxLives = 1; //Checks if maxLives is below 1
-        lives = maxLives;
+
+        //Gets all text objects tagged as LivesCount, then sets lives count
+        foreach (Text text in FindObjectsOfType<Text>())
+        {
+            if (text.CompareTag("LivesCount")) livesCount = text;
+        }
+
         armor = 0;
         invulnerable = false;
     }
 
     void Update()
     {
-        if (maxLives < 1) maxLives = 1; //Checks if maxLives is below 1
+        if (lives < 0) lives = 0; //Checks if lives are less than 0
+        if (livesCount) livesCount.text = lives.ToString();
         if (lives <= 0)
         {
+            lives = 0;
             stopMultishot();
             stopIncreasedDamage();
             armor = 0;
             stopfasterFiring();
             stopFasterSpeed();
-            gameController.gameOver = true;
-            setKey("Deaths");
-            if (gameController.isStandard) setKey("Loses");
-            PlayerPrefs.Save();
+            if (!GameController.instance.gameOver && !GameController.instance.won) GameController.instance.gameOver = true;
             Destroy(gameObject);
         }
         Vector3 screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
         float width = GetComponent<Collider>().bounds.extents.x;
-        if (!gameController.gameOver && !gameController.won && !gameController.paused)
+        if (!GameController.instance.gameOver && !GameController.instance.won && !GameController.instance.paused)
         {
             Vector3 movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
             movement = movement.normalized * speed * Time.deltaTime;
@@ -109,10 +111,9 @@ public class PlayerController : MonoBehaviour
                 {
                     if (fireSound)
                     {
-                        audioSource.PlayOneShot(fireSound, PlayerPrefs.GetFloat("SoundVolume"));
+                        audioSource.PlayOneShot(fireSound);
                     } else
                     {
-                        audioSource.volume = PlayerPrefs.GetFloat("SoundVolume");
                         audioSource.Play();
                     }
                 }
@@ -137,20 +138,12 @@ public class PlayerController : MonoBehaviour
         {
             shipArmorText.text = "";
         }
-        if (lives < 0) //Checks if lives are below 0
-        {
-            lives = 0;
-        } else if (lives >= maxLives) //Checks if lives are above maxLives
-        {
-            lives = maxLives;
-        }
-        if (damage < 1) damage = 1; //Checks if damage is below 1
-        if (fireRate < 0.2f) fireRate = 0.2f; //Checks if fireRate is below 0.2
-        if (speed < 0) speed = 0; //Checks if speed is below 0
-        if (armor < 0) //Checks if armor is below 0
+        if (damage < 1) damage = 1; //Checks if damage is less than 1
+        if (speed < 0) speed = 0; //Checks if speed is less than 0
+        if (armor < 0) //Checks if armor is less than 0
         {
             armor = 0;
-        } else if (armor >= powerupSettings.shipArmorValue) //Checks if armor is above shipArmorValue
+        } else if (armor >= powerupSettings.shipArmorValue) //Checks if armor is more than the maximum
         {
             armor = powerupSettings.shipArmorValue;
         }
@@ -158,7 +151,7 @@ public class PlayerController : MonoBehaviour
 
     public void onHit(long damage, bool instakill)
     {
-        if (!invulnerable && !gameController.won)
+        if (!invulnerable && !GameController.instance.won)
         {
             if (!instakill)
             {
@@ -167,11 +160,7 @@ public class PlayerController : MonoBehaviour
                     if (lives > 0)
                     {
                         --lives;
-                        if (explosion)
-                        {
-                            GameObject newExplosion = Instantiate(explosion, transform.position, transform.rotation);
-                            if (newExplosion.GetComponent<AudioSource>()) newExplosion.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("SoundVolume");
-                        }
+                        if (explosion) Instantiate(explosion, transform.position, transform.rotation);
                         invulnerable = true;
                         StartCoroutine("fadeEffect");
                         Invoke("stopInvulnerability", invulnerabilityTime);
@@ -192,11 +181,7 @@ public class PlayerController : MonoBehaviour
             } else
             {
                 lives = 0;
-                if (explosion)
-                {
-                    GameObject newExplosion = Instantiate(explosion, transform.position, transform.rotation);
-                    if (newExplosion.GetComponent<AudioSource>()) newExplosion.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("SoundVolume");
-                }
+                if (explosion) Instantiate(explosion, transform.position, transform.rotation);
             }
         }
     }
@@ -212,10 +197,10 @@ public class PlayerController : MonoBehaviour
                 {
                     if (bulletSpawn.CompareTag("BulletSpawn")) bulletSpawn.SetActive(true);
                 }
-                gameController.showMessage("Multiple Bullets");
+                GameController.instance.showMessage("Multiple Bullets");
                 CancelInvoke("stopMultishot");
                 Invoke("stopMultishot", powerupSettings.multishotTime);
-                gameController.addScore(5);
+                GameController.instance.addScore(5);
             } else
             {
                 Debug.LogError("multishotBulletSpawns must have a element in order for Multishot powerup to work.");
@@ -224,7 +209,7 @@ public class PlayerController : MonoBehaviour
         {
             CancelInvoke("stopMultishot");
             Invoke("stopMultishot", powerupSettings.multishotTime);
-            gameController.addScore(5);
+            GameController.instance.addScore(5);
         }
     }
 
@@ -236,10 +221,10 @@ public class PlayerController : MonoBehaviour
             {
                 hasIncreasedDamage = true;
                 damage += powerupSettings.increasedDamageValue;
-                gameController.showMessage("Increased Bullet Damage");
+                GameController.instance.showMessage("Increased Bullet Damage");
                 CancelInvoke("stopIncreasedDamage");
                 Invoke("stopIncreasedDamage", powerupSettings.increasedDamageTime);
-                gameController.addScore(5);
+                GameController.instance.addScore(5);
             } else
             {
                 Debug.LogError("Negative values cannot be used to set the damage value.");
@@ -248,7 +233,7 @@ public class PlayerController : MonoBehaviour
         {
             CancelInvoke("stopIncreasedDamage");
             Invoke("stopIncreasedDamage", powerupSettings.increasedDamageTime);
-            gameController.addScore(5);
+            GameController.instance.addScore(5);
         }
     }
 
@@ -259,8 +244,8 @@ public class PlayerController : MonoBehaviour
             if (powerupSettings.shipArmorValue > 0)
             {
                 armor = powerupSettings.shipArmorValue;
-                gameController.showMessage("You got Ship Armor!");
-                gameController.addScore(10);
+                GameController.instance.showMessage("You got Ship Armor!");
+                GameController.instance.addScore(10);
             } else
             {
                 Debug.LogError("Negative values cannot be used to set the armor value.");
@@ -268,8 +253,8 @@ public class PlayerController : MonoBehaviour
         } else if (armor > 0 && armor < powerupSettings.shipArmorValue)
         {
             ++armor;
-            if (armor < powerupSettings.shipArmorValue) gameController.showMessage("Ship Armor restored.");
-            gameController.addScore(5);
+            if (armor < powerupSettings.shipArmorValue) GameController.instance.showMessage("Ship Armor restored.");
+            GameController.instance.addScore(5);
         }
     }
 
@@ -281,10 +266,10 @@ public class PlayerController : MonoBehaviour
             {
                 hasfasterFiring = true;
                 fireRate += powerupSettings.fasterFiringSubtractedValue;
-                gameController.showMessage("Faster Firing");
+                GameController.instance.showMessage("Faster Firing");
                 CancelInvoke("stopfasterFiring");
                 Invoke("stopfasterFiring", powerupSettings.fasterFiringTime);
-                gameController.addScore(5);
+                GameController.instance.addScore(5);
             } else
             {
                 Debug.LogError("Positive values cannot be used to set the fire rate value.");
@@ -293,7 +278,7 @@ public class PlayerController : MonoBehaviour
         {
             CancelInvoke("stopfasterFiring");
             Invoke("stopfasterFiring", powerupSettings.fasterFiringTime);
-            gameController.addScore(5);
+            GameController.instance.addScore(5);
         }
     }
 
@@ -305,10 +290,10 @@ public class PlayerController : MonoBehaviour
             {
                 hasFasterSpeed = true;
                 speed += powerupSettings.fasterSpeedAddedValue;
-                gameController.showMessage("Faster Ship Speed");
+                GameController.instance.showMessage("Faster Ship Speed");
                 CancelInvoke("stopFasterSpeed");
                 Invoke("stopFasterSpeed", powerupSettings.fasterSpeedTime);
-                gameController.addScore(5);
+                GameController.instance.addScore(5);
             } else
             {
                 Debug.LogError("Negative values cannot be used to set the speed value.");
@@ -317,7 +302,7 @@ public class PlayerController : MonoBehaviour
         {
             CancelInvoke("stopFasterSpeed");
             Invoke("stopFasterSpeed", powerupSettings.fasterSpeedTime);
-            gameController.addScore(5);
+            GameController.instance.addScore(5);
         }
     }
 
@@ -407,23 +392,6 @@ public class PlayerController : MonoBehaviour
         } else
         {
             Debug.LogError("body must be set to a GameObject tagged as Player in order to set visibility.");
-        }
-    }
-
-    void setKey(string key)
-    {
-        if (key != "")
-        {
-            if (!PlayerPrefs.HasKey(key))
-            {
-                PlayerPrefs.SetString(key, "1");
-            } else
-            {
-                long plus = long.Parse(PlayerPrefs.GetString(key));
-                ++plus;
-                PlayerPrefs.SetString(key, plus.ToString());
-            }
-            PlayerPrefs.Save();
         }
     }
 }
