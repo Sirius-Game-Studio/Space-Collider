@@ -8,7 +8,7 @@ public class ShieldHealth : MonoBehaviour
 
     private long health = 0;
 
-    void Awake()
+    void Start()
     {
         health = maxHealth;
     }
@@ -20,12 +20,12 @@ public class ShieldHealth : MonoBehaviour
         {
             if (part.GetComponent<Renderer>())
             {
-                if (health > Mathf.Floor(maxHealth) * 0.5)
-                {
-                    part.GetComponent<Renderer>().material.SetColor("_Color", shieldColor);
-                } else if (health <= Mathf.Floor(maxHealth) * 0.5)
+                if (health <= maxHealth * 0.5)
                 {
                     part.GetComponent<Renderer>().material.SetColor("_Color", damagedColor);
+                } else
+                {
+                    part.GetComponent<Renderer>().material.SetColor("_Color", shieldColor);
                 }
             }
         }
