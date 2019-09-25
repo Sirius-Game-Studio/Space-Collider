@@ -4,8 +4,7 @@ public class EnemyHealth : MonoBehaviour
 {
     [Header("Stats")]
     public long health = 0;
-    [SerializeField] private long score = 0;
-    [Tooltip("The kills key to update (leave blank to not count towards kills).")] [SerializeField] private string killsKey = "";
+    [Tooltip("Amount of score earned from killing this enemy (Survival only).")] [SerializeField] private long score = 0;
 
     [Header("Additional Enemy Spawning")]
     public bool spawnEnemiesOnDeath = false;
@@ -15,8 +14,8 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private Vector2 randomSpawnY = Vector2.zero;
 
     [Header("Extra Life")]
-    [Tooltip("Only in Survival.")] [SerializeField] private bool giveLivesOnDeath = false;
-    [Tooltip("Only in Survival.")] [SerializeField] private long livesGiven = 1;
+    [Tooltip("Survival only.")] [SerializeField] private bool giveLivesOnDeath = false;
+    [Tooltip("Amount of lives given upon killing this enemy (Survival only).")] [SerializeField] private long livesGiven = 1;
 
     [Header("Setup")]
     [SerializeField] private GameObject explosion = null;
@@ -26,11 +25,7 @@ public class EnemyHealth : MonoBehaviour
         if (health <= 0)
         {
             GameController.instance.addScore(score);
-            if (explosion)
-            {
-                GameObject newExplosion = Instantiate(explosion, transform.position, transform.rotation);
-                if (newExplosion.GetComponent<AudioSource>()) newExplosion.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("SoundVolume");
-            }
+            if (explosion) Instantiate(explosion, transform.position, transform.rotation);
             if (spawnEnemiesOnDeath && enemiesToSpawn.Length > 0 && enemyAmount > 0)
             {
                 for (int i = 0; i < enemyAmount; i++)
@@ -38,10 +33,10 @@ public class EnemyHealth : MonoBehaviour
                     Instantiate(enemiesToSpawn[Random.Range(0, enemiesToSpawn.Length)], transform.position + new Vector3(Random.Range(randomSpawnX.x, randomSpawnX.y), Random.Range(randomSpawnY.x, randomSpawnY.y), 0), Quaternion.Euler(Random.Range(-180, 180), -90, 90));
                 }
             }
-            if (!GameController.instance.isStandard && giveLivesOnDeath && livesGiven > 0)
+            if (!GameController.instance.isCampaign && giveLivesOnDeath && livesGiven > 0)
             {
                 PlayerController playerController = FindObjectOfType<PlayerController>();
-                if (playerController && playerController.lives > 0 && playerController.lives < playerController.maxLives)
+                if (playerController && playerController.lives > 0)
                 {
                     if (GameController.instance.difficulty < 4) //If current Survival difficulty is below NIGHTMARE!
                     {
@@ -56,21 +51,6 @@ public class EnemyHealth : MonoBehaviour
                         }
                     }
                 }
-            }
-            if (killsKey != "")
-            {
-                if (!PlayerPrefs.HasKey(killsKey))
-                {
-                    PlayerPrefs.SetString(killsKey, "1");
-                } else
-                {
-                    /*
-                    long update = long.Parse(PlayerPrefs.GetString(killsKey));
-                    ++update;
-                    PlayerPrefs.SetString(killsKey, update.ToString());
-                    */
-                }
-                PlayerPrefs.Save();
             }
             Destroy(gameObject);
         }
@@ -89,7 +69,7 @@ public class EnemyHealth : MonoBehaviour
 
     void giveLife(PlayerController playerController)
     {
-        if (playerController && playerController.lives > 0 && playerController.lives < playerController.maxLives && livesGiven > 0 && health <= 0)
+        if (playerController && playerController.lives > 0 && livesGiven > 0 && health <= 0)
         {
             playerController.lives += livesGiven;
             if (livesGiven == 1)
