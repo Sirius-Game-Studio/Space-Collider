@@ -33,7 +33,7 @@ public class EnemyHealth : MonoBehaviour
                     Instantiate(enemiesToSpawn[Random.Range(0, enemiesToSpawn.Length)], transform.position + new Vector3(Random.Range(randomSpawnX.x, randomSpawnX.y), Random.Range(randomSpawnY.x, randomSpawnY.y), 0), Quaternion.Euler(Random.Range(-180, 180), -90, 90));
                 }
             }
-            if (!GameController.instance.isCampaign && giveLivesOnDeath && livesGiven > 0)
+            if (!GameController.instance.isCampaignLevel && giveLivesOnDeath && livesGiven > 0)
             {
                 PlayerController playerController = FindObjectOfType<PlayerController>();
                 if (playerController && playerController.lives > 0)
