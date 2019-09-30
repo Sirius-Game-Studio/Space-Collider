@@ -26,12 +26,15 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer = null;
 
     private AudioSource audioSource;
+    private Controls input;
     private bool loading = false;
 
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        input = new Controls();
         if (audioSource) audioSource.ignoreListenerPause = true;
+        loading = false;
         Time.timeScale = 1;
         AudioListener.pause = false;
         if (!PlayerPrefs.HasKey("SoundVolume"))
@@ -57,9 +60,26 @@ public class MainMenuManager : MonoBehaviour
         selectDifficultyMenu.enabled = false;
         clearHighScoresPrompt.enabled = false;
     }
+
+    void OnEnable()
+    {
+        input.Enable();
+        input.Gameplay.Fullscreen.performed += context => toggleFullscreen();
+        input.Menu.ClearHighScores.performed += context => clearHighScores(false);
+        input.Menu.CloseMenu.performed += context => closeMenu();
+    }
+
+    void OnDisable()
+    {
+        input.Disable();
+        input.Gameplay.Fullscreen.performed -= context => toggleFullscreen();
+        input.Menu.ClearHighScores.performed -= ContextMenu => clearHighScores(false);
+        input.Menu.CloseMenu.performed -= context => closeMenu();
+    }
     
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.JoystickButton0) && clearHighScoresPrompt.enabled) clearHighScores(false);
         updateHighScore(endlessEasyHighScore, "EasyHighScore", "Easy");
         updateHighScore(endlessNormalHighScore, "NormalHighScore", "Normal");
         updateHighScore(endlessHardHighScore, "HardHighScore", "Hard");
@@ -70,6 +90,36 @@ public class MainMenuManager : MonoBehaviour
         } else
         {
             loadingText.enabled = true;
+        }
+    }
+
+    void toggleFullscreen()
+    {
+        Screen.fullScreen = !Screen.fullScreen;
+    }
+
+    void closeMenu()
+    {
+        if (highScoresMenu.enabled)
+        {
+            highScoresMenu.enabled = false;
+            mainMenu.enabled = true;
+        } else if (settingsMenu.enabled)
+        {
+            settingsMenu.enabled = false;
+            mainMenu.enabled = true;
+        } else if (gamemodesMenu.enabled)
+        {
+            gamemodesMenu.enabled = false;
+            mainMenu.enabled = true;
+        } else if (selectDifficultyMenu.enabled)
+        {
+            selectDifficultyMenu.enabled = false;
+            gamemodesMenu.enabled = true;
+        } else if (clearHighScoresPrompt.enabled)
+        {
+            clearHighScoresPrompt.enabled = false;
+            highScoresMenu.enabled = true;
         }
     }
     
@@ -203,7 +253,7 @@ public class MainMenuManager : MonoBehaviour
         }
         Application.Quit();
         #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+        UnityEditor.EditorApplication.isPlaying = false;
         #endif
     }
 
@@ -252,25 +302,28 @@ public class MainMenuManager : MonoBehaviour
     }
 
 
-    public void clearHighScores()
+    public void clearHighScores(bool wasClicked)
     {
-        if (audioSource)
+        if (clearHighScoresPrompt.enabled)
         {
-            if (buttonClick)
+            if (audioSource && wasClicked)
             {
-                audioSource.PlayOneShot(buttonClick);
-            } else
-            {
-                audioSource.Play();
+                if (buttonClick)
+                {
+                    audioSource.PlayOneShot(buttonClick);
+                } else
+                {
+                    audioSource.Play();
+                }
             }
+            PlayerPrefs.DeleteKey("EasyHighScore");
+            PlayerPrefs.DeleteKey("NormalHighScore");
+            PlayerPrefs.DeleteKey("HardHighScore");
+            PlayerPrefs.DeleteKey("NightmareHighScore");
+            PlayerPrefs.Save();
+            clearHighScoresPrompt.enabled = false;
+            highScoresMenu.enabled = true;
         }
-        PlayerPrefs.DeleteKey("EasyHighScore");
-        PlayerPrefs.DeleteKey("NormalHighScore");
-        PlayerPrefs.DeleteKey("HardHighScore");
-        PlayerPrefs.DeleteKey("NightmareHighScore");
-        PlayerPrefs.Save();
-        clearHighScoresPrompt.enabled = false;
-        highScoresMenu.enabled = true;
     }
 
     void updateHighScore(Text main, string key, string difficulty)

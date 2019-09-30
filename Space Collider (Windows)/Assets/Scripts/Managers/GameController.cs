@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
 
-    [Header("Game Settings")]
+    [Header("Settings")]
     [SerializeField] private long wavesToClearForShieldRespawn = 0;
     public float enemyMoveTime = 0.3f;
     public float enemyFireRate = 3;
@@ -21,36 +22,33 @@ public class GameController : MonoBehaviour
     [SerializeField] private bool canEnemyShipsSpawn = true;
     [SerializeField] private bool canAsteroidsSpawn = true;
 
-    [Header("Survival Mode-Only Settings")]
+    [Header("Survival-Only Settings")]
     [SerializeField] private float scoreMultiplier = 1;
     [Tooltip("1 is Easy, 2 is Normal, 3 is Hard, 4 is NIGHTMARE!.")] [Range(1, 4)] public int difficulty = 1;
-    [Tooltip("List of bosses to spawn after clearing 5 waves (only used in NIGHTMARE!).")] [SerializeField] private GameObject[] NIGHTMAREBosses = new GameObject[0];
+    [Tooltip("NIGHTMARE! only.")] [SerializeField] private GameObject[] NIGHTMAREBosses = new GameObject[0];
 
     [Header("Sound Effects")]
+    [SerializeField] private AudioClip buttonClick = null;
     [SerializeField] private AudioClip gameOverJingle = null;
     [SerializeField] private AudioClip winJingle = null;
-    [SerializeField] private AudioClip clickSound = null;
 
     [Header("UI")]
-    [SerializeField] private GameObject gameUIMain = null;
-    [SerializeField] private Canvas gamePausedUI = null;
-    [SerializeField] private Canvas gameOverUI = null;
-    [SerializeField] private Canvas levelCompletedUI = null;
-    [SerializeField] private Canvas restartUI = null;
-    [SerializeField] private Canvas exitToMainMenuUI = null;
-    [SerializeField] private Canvas quitGameUI = null;
-    [SerializeField] private Canvas settingsUI = null;
+    [SerializeField] private Canvas gameHUD = null;
+    [SerializeField] private Canvas gamePausedMenu = null;
+    [SerializeField] private Canvas gameOverMenu = null;
+    [SerializeField] private Canvas levelCompletedMenu = null;
+    [SerializeField] private Canvas settingsMenu = null;
+    [SerializeField] private Canvas quitGameMenu = null;
+    [SerializeField] private Canvas restartPrompt = null;
     [SerializeField] private Text levelCount = null;
     [SerializeField] private Text scoreCount = null;
     [SerializeField] private Text waveCount = null;
-    [SerializeField] private Slider soundSlider = null;
-    [SerializeField] private Slider musicSlider = null;
     [SerializeField] private Text highScoreIndicator = null;
     [SerializeField] private Text message = null;
     [SerializeField] private Text loadingText = null;
 
-    [Header("Miscellanous")]
-    [Tooltip("Should this scene act like a Campaign level?")] public bool isStandard = false;
+    [Header("Miscellaneous")]
+    public bool isCampaignLevel = true;
     [Tooltip("Gives a life after the kill goal is reached (only used in Survival Mode NIGHTMARE!).")] public int killsForLife = 0;
     public bool gameOver = false;
     public bool won = false;
@@ -64,8 +62,10 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject enemyShip = null;
     [SerializeField] private GameObject[] asteroids = new GameObject[0];
     [SerializeField] private GameObject[] powerups = new GameObject[0];
+    [SerializeField] private AudioMixer audioMixer = null;
 
     private AudioSource audioSource;
+    private Controls input;
     private long score = 0;
     private long wave = 1;
     private bool loading = false;
@@ -85,58 +85,69 @@ public class GameController : MonoBehaviour
             Destroy(gameObject);
         }
         audioSource = GetComponent<AudioSource>();
-        gameOver = false;
-        won = false;
-        paused = false;
-        killsForLife = 0;
+        input = new Controls();
+        if (audioSource) audioSource.ignoreListenerPause = true;
+        loading = false;
         Time.timeScale = 1;
         AudioListener.pause = false;
         if (!PlayerPrefs.HasKey("SoundVolume"))
         {
             PlayerPrefs.SetFloat("SoundVolume", 1);
             PlayerPrefs.Save();
-            soundSlider.value = 1;
         } else
         {
-            soundSlider.value = PlayerPrefs.GetFloat("SoundVolume");
+            audioMixer.SetFloat("SoundVolume", Mathf.Log10(PlayerPrefs.GetFloat("SoundVolume")) * 20);
         }
         if (!PlayerPrefs.HasKey("MusicVolume"))
         {
             PlayerPrefs.SetFloat("MusicVolume", 1);
             PlayerPrefs.Save();
-            musicSlider.value = 1;
         } else
         {
-            musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+            audioMixer.SetFloat("MusicVolume", Mathf.Log10(PlayerPrefs.GetFloat("MusicVolume")) * 20);
         }
-        if (Camera.main.GetComponent<AudioSource>())
-        {
-            Camera.main.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume");
-            Camera.main.GetComponent<AudioSource>().Play();
-        }
-        gamePausedUI.enabled = false;
-        gameOverUI.enabled = false;
-        levelCompletedUI.enabled = false;
-        restartUI.enabled = false;
-        exitToMainMenuUI.enabled = false;
-        quitGameUI.enabled = false;
+        gameOver = false;
+        won = false;
+        paused = false;
+        killsForLife = 0;
+        gameHUD.enabled = true;
+        gamePausedMenu.enabled = false;
+        gameOverMenu.enabled = false;
+        levelCompletedMenu.enabled = false;
+        settingsMenu.enabled = false;
+        quitGameMenu.enabled = false;
+        restartPrompt.enabled = false;
         spawnEnemyPattern();
         if (canEnemyShipsSpawn) StartCoroutine(spawnEnemyShips());
         if (canAsteroidsSpawn) StartCoroutine(spawnAsteroids());
         StartCoroutine(spawnPowerups());
     }
+
+    void OnEnable()
+    {
+        input.Enable();
+        input.Gameplay.Fullscreen.performed += context => toggleFullscreen();
+        input.Gameplay.Pause.performed += context => pause();
+        input.Gameplay.Resume.performed += context => resumeGame(false);
+        input.Gameplay.Restart.performed += context => restart(false);
+        input.Menu.CloseMenu.performed += context => closeMenu();
+    }
+
+    void OnDisable()
+    {
+        input.Disable();
+        input.Gameplay.Fullscreen.performed -= context => toggleFullscreen();
+        input.Gameplay.Pause.performed -= context => pause();
+        input.Gameplay.Resume.performed -= context => resumeGame(false);
+        input.Gameplay.Restart.performed -= context => restart(false);
+        input.Menu.CloseMenu.performed -= context => closeMenu();
+    }
     
     void Update()
     {
-        PlayerPrefs.SetFloat("SoundVolume", soundSlider.value);
-        PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
-        PlayerPrefs.Save();
-        if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().volume = PlayerPrefs.GetFloat("MusicVolume");
-        if (Input.GetKeyDown(KeyCode.F11)) Screen.fullScreen = !Screen.fullScreen;
-        if (Input.GetKeyDown(KeyCode.Escape)) pause();
         if (!gameOver && !won && enemyHolder.transform.childCount <= 0)
         {
-            if (isStandard)
+            if (isCampaignLevel)
             {
                 if (wave < enemyPatterns.Length)
                 {
@@ -146,19 +157,10 @@ public class GameController : MonoBehaviour
                 } else
                 {
                     won = true;
-                    if (!PlayerPrefs.HasKey("Wins"))
-                    {
-                        PlayerPrefs.SetString("Wins", "1");
-                    } else
-                    {
-                        long plus = long.Parse(PlayerPrefs.GetString("Wins"));
-                        ++plus;
-                        PlayerPrefs.SetString("Wins", plus.ToString());
-                    }
                     if (PlayerPrefs.GetInt("StandardLevel") >= PlayerPrefs.GetInt("MaxCampaignLevels"))
                     {
                         PlayerPrefs.SetInt("StandardLevel", 1);
-                        levelCompletedUI.enabled = false;
+                        levelCompletedMenu.enabled = false;
                         StartCoroutine(loadScene("Campaign Ending"));
                     }
                     PlayerPrefs.Save();
@@ -171,31 +173,28 @@ public class GameController : MonoBehaviour
                 scoreMultiplier += 0.01f;
                 spawnEnemyPattern();
             }
-            if (!gameOver && !won)
+            if (!gameOver && !won && !isCampaignLevel)
             {
-                if (!isStandard)
+                if (difficulty <= 1)
                 {
-                    if (difficulty <= 1)
-                    {
-                        enemyMoveTime -= 0.015f;
-                        enemyFireRate -= 0.15f;
-                        enemyBulletSpeedIncrement -= 0.0875f;
-                    } else if (difficulty == 2)
-                    {
-                        enemyMoveTime -= 0.02f;
-                        enemyFireRate -= 0.2f;
-                        enemyBulletSpeedIncrement += 0.125f;
-                    } else if (difficulty == 3)
-                    {
-                        enemyMoveTime -= 0.025f;
-                        enemyFireRate -= 0.3f;
-                        enemyBulletSpeedIncrement -= 0.15f;
-                    } else if (difficulty >= 4)
-                    {
-                        enemyMoveTime -= 0.035f;
-                        enemyFireRate -= 0.4f;
-                        enemyBulletSpeedIncrement -= 0.2f;
-                    }
+                    enemyMoveTime -= 0.015f;
+                    enemyFireRate -= 0.15f;
+                    enemyBulletSpeedIncrement -= 0.0875f;
+                } else if (difficulty == 2)
+                {
+                    enemyMoveTime -= 0.02f;
+                    enemyFireRate -= 0.2f;
+                    enemyBulletSpeedIncrement += 0.125f;
+                } else if (difficulty == 3)
+                {
+                    enemyMoveTime -= 0.025f;
+                    enemyFireRate -= 0.3f;
+                    enemyBulletSpeedIncrement -= 0.15f;
+                } else if (difficulty >= 4)
+                {
+                    enemyMoveTime -= 0.035f;
+                    enemyFireRate -= 0.4f;
+                    enemyBulletSpeedIncrement -= 0.2f;
                 }
             }
         }
@@ -213,15 +212,15 @@ public class GameController : MonoBehaviour
         }
         if (gameOver && !won)
         {
-            if (!restartUI.enabled && !exitToMainMenuUI.enabled && !quitGameUI.enabled) gameOverUI.enabled = true;
+            if (!quitGameMenu.enabled && !restartPrompt.enabled) gameOverMenu.enabled = true;
             clickSource = 2;
-            if (!playedLoseJingle)
+            if (audioSource && gameOverJingle && !playedLoseJingle)
             {
                 playedLoseJingle = true;
-                audioSource.PlayOneShot(gameOverJingle, PlayerPrefs.GetFloat("SoundVolume"));
+                audioSource.PlayOneShot(gameOverJingle);
             }
             if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().Stop();
-            if (!isStandard)
+            if (!isCampaignLevel)
             {
                 if (difficulty <= 1)
                 {
@@ -239,23 +238,26 @@ public class GameController : MonoBehaviour
             }
         } else
         {
-            gameOverUI.enabled = false;
+            gameOverMenu.enabled = false;
         }
-        if (isStandard && !gameOver && won)
+        if (isCampaignLevel && !gameOver && won)
         {
-            if (!restartUI.enabled && !exitToMainMenuUI.enabled && !quitGameUI.enabled) levelCompletedUI.enabled = true;
+            if (!loading && !quitGameMenu.enabled && !restartPrompt.enabled) levelCompletedMenu.enabled = true;
             clickSource = 3;
-            if (!playedWinJingle)
+            if (PlayerPrefs.GetInt("StandardLevel") < PlayerPrefs.GetInt("MaxLevels"))
             {
-                playedWinJingle = true;
-                audioSource.PlayOneShot(winJingle, PlayerPrefs.GetFloat("SoundVolume"));
+                if (audioSource && winJingle && !playedWinJingle)
+                {
+                    playedWinJingle = true;
+                    audioSource.PlayOneShot(winJingle);
+                }
+            } else
+            {
+                StartCoroutine(loadScene("Ending"));
             }
             if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().Stop();
-        } else
-        {
-            levelCompletedUI.enabled = false;
         }
-        if (isStandard)
+        if (isCampaignLevel)
         {
             levelCount.transform.parent.gameObject.SetActive(true);
             if (PlayerPrefs.HasKey("StandardLevel"))
@@ -276,30 +278,40 @@ public class GameController : MonoBehaviour
         }
         if (!loading)
         {
-            GameObject[] backgrounds = GameObject.FindGameObjectsWithTag("Background");
-            loadingText.enabled = false;
-            foreach (GameObject background in backgrounds)
+            Camera.main.transform.position = new Vector3(0, 0, -10);
+            foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
             {
-                background.transform.position = new Vector3(0, background.transform.position.y, 0);
-                Camera.main.transform.position = new Vector3(0, 0, -10);
-                gameUIMain.SetActive(true);
+                if (player) player.SetActive(true);
+            }
+            foreach (GameObject background in GameObject.FindGameObjectsWithTag("Background"))
+            {
+                if (background)
+                {
+                    background.transform.position = new Vector3(0, background.transform.position.y, 5);
+                    background.GetComponent<BackgroundScroll>().enabled = true;
+                }
             }
         } else
         {
-            GameObject[] backgrounds = GameObject.FindGameObjectsWithTag("Background");
-            loadingText.enabled = true;
-            foreach (GameObject background in backgrounds)
+            Camera.main.transform.position = new Vector3(500, 0, -10);
+            foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
             {
-                background.transform.position = new Vector3(1000, background.transform.position.y, 0);
-                Camera.main.transform.position = new Vector3(1000, 0, -10);
-                gameUIMain.SetActive(false);
+                if (player) player.SetActive(false);
+            }
+            foreach (GameObject background in GameObject.FindGameObjectsWithTag("Background"))
+            {
+                if (background)
+                {
+                    background.transform.position = new Vector3(500, background.transform.position.y, 5);
+                    background.GetComponent<BackgroundScroll>().enabled = false;
+                }
             }
         }
         if (enemyMoveTime < maxEnemyMoveTime) enemyMoveTime = maxEnemyMoveTime; //Checks if enemy move time is exceeding the maximum
         if (enemyFireRate < maxEnemyFireRate) enemyFireRate = maxEnemyFireRate; //Checks if enemy fire rate is exceeding the maximum
         if (enemyBulletSpeedIncrement > maxEnemyBulletSpeedIncrement) enemyBulletSpeedIncrement = maxEnemyBulletSpeedIncrement; //Checks if enemy bullet speed increment is exceeding the maximum
-        if (isStandard) scoreMultiplier = 0; //Checks if the gamemode being played is Campaign
-        if (!isStandard && difficulty < 4) //Checks if Survival Mode is being played on difficulties below NIGHTMARE!
+        if (isCampaignLevel) scoreMultiplier = 0; //Checks if the gamemode being played is Campaign
+        if (!isCampaignLevel && difficulty < 4) //Checks if Survival Mode is being played on difficulties below NIGHTMARE!
         {
             NIGHTMAREBosses = new GameObject[0];
             killsForLife = 0;
@@ -307,10 +319,62 @@ public class GameController : MonoBehaviour
         if (scoreMultiplier < 0) scoreMultiplier = 0; //Checks if the score multiplier is below 0
     }
 
+    void toggleFullscreen()
+    {
+        Screen.fullScreen = !Screen.fullScreen;
+    }
+
+    void closeMenu()
+    {
+        if (paused)
+        {
+            if (settingsMenu.enabled)
+            {
+                settingsMenu.enabled = false;
+                if (clickSource <= 1)
+                {
+                    gamePausedMenu.enabled = true;
+                } else if (clickSource == 2)
+                {
+                    gameOverMenu.enabled = true;
+                } else if (clickSource >= 3)
+                {
+                    levelCompletedMenu.enabled = true;
+                }
+            } else if (quitGameMenu.enabled)
+            {
+                quitGameMenu.enabled = false;
+                if (clickSource <= 1)
+                {
+                    gamePausedMenu.enabled = true;
+                } else if (clickSource == 2)
+                {
+                    gameOverMenu.enabled = true;
+                } else if (clickSource >= 3)
+                {
+                    levelCompletedMenu.enabled = true;
+                }
+            } else if (restartPrompt.enabled)
+            {
+                restartPrompt.enabled = false;
+                if (clickSource <= 1)
+                {
+                    gamePausedMenu.enabled = true;
+                } else if (clickSource == 2)
+                {
+                    gameOverMenu.enabled = true;
+                } else if (clickSource >= 3)
+                {
+                    levelCompletedMenu.enabled = true;
+                }
+            }
+        }
+    }
+
     void spawnEnemyPattern()
     {
         GameObject pattern;
-        if (isStandard)
+        if (isCampaignLevel)
         {
             if (wave < enemyPatterns.Length + 1)
             {
@@ -360,15 +424,15 @@ public class GameController : MonoBehaviour
                 {
                     GameObject ship;
                     float random = Random.value;
-                    if (random <= 0.5f)
+                    if (random <= 0.5f) //Left
                     {
                         ship = Instantiate(enemyShip, new Vector3(-18, 7.5f, 0), Quaternion.Euler(-90, 0, 0));
-                        if (!isStandard && difficulty <= 1) ship.GetComponent<EnemyHealth>().health = 1;
+                        if (!isCampaignLevel && difficulty <= 1) ship.GetComponent<EnemyHealth>().health = 1;
                         ship.GetComponent<Mover>().speed = 5;
-                    } else
+                    } else //Right
                     {
                         ship = Instantiate(enemyShip, new Vector3(18, 7.5f, 0), Quaternion.Euler(-90, 0, 0));
-                        if (!isStandard && difficulty <= 1) ship.GetComponent<EnemyHealth>().health = 1;
+                        if (!isCampaignLevel && difficulty <= 1) ship.GetComponent<EnemyHealth>().health = 1;
                         ship.GetComponent<Mover>().speed = -5;
                     }
                 }
@@ -417,12 +481,12 @@ public class GameController : MonoBehaviour
 
     public void addScore(long value)
     {
-        if (!isStandard && !gameOver && value > 0) score += (long)(value * scoreMultiplier);
+        if (!isCampaignLevel && !gameOver && value > 0) score += (long)(value * scoreMultiplier);
     }
 
     void setNewHighScore(string key)
     {
-        if (key != "" && !isStandard)
+        if (key != "" && !isCampaignLevel)
         {
             if (!PlayerPrefs.HasKey(key) && score > 0)
             {
@@ -469,40 +533,63 @@ public class GameController : MonoBehaviour
 
     void pause()
     {
-        if (!gameOver && !won && !settingsUI.enabled && !restartUI.enabled && !exitToMainMenuUI.enabled && !quitGameUI.enabled)
+        if (!gameOver && !won && !gameOverMenu.enabled && !levelCompletedMenu.enabled)
         {
-            clickSource = 1;
-            if (!paused)
+            if (!paused) //Pauses the game
             {
+                clickSource = 1;
                 paused = true;
                 Time.timeScale = 0;
                 AudioListener.pause = true;
-                gamePausedUI.enabled = true;
-            } else
+                gamePausedMenu.enabled = true;
+            } else //Unpauses the game
             {
-                paused = false;
-                Time.timeScale = 1;
-                AudioListener.pause = false;
-                gamePausedUI.enabled = false;
+                if (!settingsMenu.enabled && !quitGameMenu.enabled && !restartPrompt.enabled)
+                {
+                    paused = false;
+                    Time.timeScale = 1;
+                    AudioListener.pause = false;
+                    gamePausedMenu.enabled = false;
+                }
             }
         }
     }
 
-    public void resumeGame()
+    public void resumeGame(bool wasClicked)
     {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        paused = false;
-        Time.timeScale = 1;
-        AudioListener.pause = false;
-        gamePausedUI.enabled = false;
+        if (!settingsMenu.enabled && !quitGameMenu.enabled && !restartPrompt.enabled)
+        {
+            if (audioSource && wasClicked)
+            {
+                if (buttonClick)
+                {
+                    audioSource.PlayOneShot(buttonClick);
+                } else
+                {
+                    audioSource.Play();
+                }
+            }
+            paused = false;
+            Time.timeScale = 1;
+            AudioListener.pause = false;
+            gamePausedMenu.enabled = false;
+        }
     }
 
     public void toNextLevel()
     {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!loading && isStandard)
+        if (isCampaignLevel && won && levelCompletedMenu.enabled)
         {
-            loading = true;
+            if (audioSource)
+            {
+                if (buttonClick)
+                {
+                    audioSource.PlayOneShot(buttonClick);
+                } else
+                {
+                    audioSource.Play();
+                }
+            }
             if (PlayerPrefs.GetInt("StandardLevel") < PlayerPrefs.GetInt("MaxCampaignLevels"))
             {
                 PlayerPrefs.SetInt("StandardLevel", PlayerPrefs.GetInt("StandardLevel") + 1);
@@ -510,181 +597,128 @@ public class GameController : MonoBehaviour
             } else
             {
                 PlayerPrefs.SetInt("StandardLevel", 1);
-                StartCoroutine(loadScene("Campaign Ending"));
+                StartCoroutine(loadScene("Ending"));
             }
             PlayerPrefs.Save();
         }
     }
 
-    public void restartGame()
+    public void restart(bool wasClicked)
     {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!loading)
+        if (gameOverMenu.enabled || restartPrompt.enabled)
         {
-            loading = true;
+            if (audioSource && wasClicked)
+            {
+                if (buttonClick)
+                {
+                    audioSource.PlayOneShot(buttonClick);
+                } else
+                {
+                    audioSource.Play();
+                }
+            }
             StartCoroutine(loadScene(SceneManager.GetActiveScene().name));
-        }
-    }
-
-    public void clickRestart()
-    {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!restartUI.enabled)
-        {
-            restartUI.enabled = true;
-            if (clickSource <= 1)
-            {
-                gamePausedUI.enabled = false;
-            } else if (clickSource == 2)
-            {
-                gameOverUI.enabled = false;
-            } else if (clickSource >= 3)
-            {
-                levelCompletedUI.enabled = false;
-            }
-        } else
-        {
-            restartUI.enabled = false;
-            if (clickSource <= 1)
-            {
-                gamePausedUI.enabled = true;
-            } else if (clickSource == 2)
-            {
-                gameOverUI.enabled = true;
-            } else if (clickSource >= 3)
-            {
-                levelCompletedUI.enabled = true;
-            }
-        }
-    }
-
-    public void clickSettings()
-    {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!settingsUI.enabled)
-        {
-            settingsUI.enabled = true;
-            if (clickSource <= 1)
-            {
-                gamePausedUI.enabled = false;
-            } else if (clickSource == 2)
-            {
-                gameOverUI.enabled = false;
-            } else if (clickSource >= 3)
-            {
-                levelCompletedUI.enabled = false;
-            }
-        } else
-        {
-            settingsUI.enabled = false;
-            if (clickSource <= 1)
-            {
-                gamePausedUI.enabled = true;
-            } else if (clickSource == 2)
-            {
-                gameOverUI.enabled = true;
-            } else if (clickSource >= 3)
-            {
-                levelCompletedUI.enabled = true;
-            }
-        }
-    }
-
-    public void clickExitToMainMenu()
-    {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!exitToMainMenuUI.enabled)
-        {
-            exitToMainMenuUI.enabled = true;
-            if (clickSource <= 1)
-            {
-                gamePausedUI.enabled = false;
-            } else if (clickSource == 2)
-            {
-                gameOverUI.enabled = false;
-            } else if (clickSource >= 3)
-            {
-                levelCompletedUI.enabled = false;
-            }
-        } else
-        {
-            exitToMainMenuUI.enabled = false;
-            if (clickSource <= 1)
-            {
-                gamePausedUI.enabled = true;
-            } else if (clickSource == 2)
-            {
-                gameOverUI.enabled = true;
-            } else if (clickSource >= 3)
-            {
-                levelCompletedUI.enabled = true;
-            }
-        }
-    }
-
-    public void clickQuitGame()
-    {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!quitGameUI.enabled)
-        {
-            quitGameUI.enabled = true;
-            if (clickSource <= 1)
-            {
-                gamePausedUI.enabled = false;
-            } else if (clickSource == 2)
-            {
-                gameOverUI.enabled = false;
-            } else if (clickSource >= 3)
-            {
-                levelCompletedUI.enabled = false;
-            }
-        } else
-        {
-            quitGameUI.enabled = false;
-            if (clickSource <= 1)
-            {
-                gamePausedUI.enabled = true;
-            } else if (clickSource == 2)
-            {
-                gameOverUI.enabled = true;
-            } else if (clickSource >= 3)
-            {
-                levelCompletedUI.enabled = true;
-            }
-        }
-    }
-
-    public void exitToMainMenu()
-    {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
-        if (!loading)
-        {
-            loading = true;
-            StartCoroutine(loadScene("Main Menu"));
         }
     }
 
     public void exitGame()
     {
-        if (audioSource && clickSound) audioSource.PlayOneShot(clickSound, PlayerPrefs.GetFloat("SoundVolume"));
+        if (audioSource)
+        {
+            if (buttonClick)
+            {
+                audioSource.PlayOneShot(buttonClick);
+            } else
+            {
+                audioSource.Play();
+            }
+        }
         Application.Quit();
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+    }
+
+    public void exitToMainMenu()
+    {
+        if (audioSource)
+        {
+            if (buttonClick)
+            {
+                audioSource.PlayOneShot(buttonClick);
+            } else
+            {
+                audioSource.Play();
+            }
+        }
+        StartCoroutine(loadScene("Main Menu"));
+    }
+
+    public void openCanvasFromClickSource(Canvas canvas)
+    {
+        if (canvas)
+        {
+            if (audioSource)
+            {
+                if (buttonClick)
+                {
+                    audioSource.PlayOneShot(buttonClick);
+                } else
+                {
+                    audioSource.Play();
+                }
+            }
+            if (!canvas.enabled)
+            {
+                canvas.enabled = true;
+                if (clickSource <= 1)
+                {
+                    gamePausedMenu.enabled = false;
+                } else if (clickSource == 2)
+                {
+                    gameOverMenu.enabled = false;
+                } else if (clickSource >= 3)
+                {
+                    levelCompletedMenu.enabled = false;
+                }
+            } else
+            {
+                canvas.enabled = false;
+                if (clickSource <= 1)
+                {
+                    gamePausedMenu.enabled = true;
+                } else if (clickSource == 2)
+                {
+                    gameOverMenu.enabled = true;
+                } else if (clickSource >= 3)
+                {
+                    levelCompletedMenu.enabled = true;
+                }
+            }
+        }
     }
 
     IEnumerator loadScene(string scene)
     {
-        AsyncOperation load = SceneManager.LoadSceneAsync(scene);
-        while (!load.isDone)
+        if (!loading)
         {
-            loadingText.text = "Loading: " + Mathf.Floor(load.progress * 100) + "%";
-            gamePausedUI.enabled = false;
-            gameOverUI.enabled = false;
-            levelCompletedUI.enabled = false;
-            restartUI.enabled = false;
-            exitToMainMenuUI.enabled = false;
-            quitGameUI.enabled = false;
-            yield return null;
+            loading = true;
+            AsyncOperation load = SceneManager.LoadSceneAsync(scene);
+            if (Camera.main.GetComponent<AudioSource>()) Camera.main.GetComponent<AudioSource>().Stop();
+            while (!load.isDone)
+            {
+                Time.timeScale = 0;
+                AudioListener.pause = true;
+                loadingText.text = "Loading: " + Mathf.Floor(load.progress * 100) + "%";
+                gameHUD.enabled = false;
+                gamePausedMenu.enabled = false;
+                gameOverMenu.enabled = false;
+                levelCompletedMenu.enabled = false;
+                settingsMenu.enabled = false;
+                quitGameMenu.enabled = false;
+                restartPrompt.enabled = false;
+                yield return null;
+            }
         }
-        loading = false;
-        gameUIMain.SetActive(true);
     }
 }

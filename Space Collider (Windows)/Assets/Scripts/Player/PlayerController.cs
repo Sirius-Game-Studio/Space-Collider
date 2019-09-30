@@ -44,6 +44,9 @@ public class PlayerController : MonoBehaviour
 
     private AudioSource audioSource;
     private Text livesCount;
+    private Controls input;
+    private Vector2 movement;
+    private bool shooting = false;
     private bool hasMultishot = false, hasIncreasedDamage = false, hasfasterFiring = false, hasFasterSpeed = false;
     private bool doFadeEffect = false;
     private float nextShot = 0;
@@ -62,9 +65,38 @@ public class PlayerController : MonoBehaviour
         invulnerable = false;
     }
 
+    void Awake()
+    {
+        input = new Controls();
+    }
+
+    void OnEnable()
+    {
+        input.Enable();
+        input.Player.Move.performed += context => move(context.ReadValue<Vector2>());
+        input.Player.Fire.performed += context => fire(true);
+        input.Player.Move.canceled += context => move(Vector2.zero);
+        input.Player.Fire.canceled += context => fire(false);
+    }
+
+    void OnDisable()
+    {
+        input.Disable();
+        input.Player.Move.performed -= context => move(context.ReadValue<Vector2>());
+        input.Player.Fire.performed -= context => fire(true);
+        input.Player.Move.canceled -= context => move(Vector2.zero);
+        input.Player.Fire.canceled -= context => fire(false);
+    }
+
     void Update()
     {
-        if (lives < 0) lives = 0; //Checks if lives are less than 0
+        if (lives > 5) //Checks if lives are more than 5
+        {
+            lives = 5;
+        } else if (lives < 0) //Checks if lives are less than 0
+        {
+            lives = 0;
+        }
         if (livesCount) livesCount.text = lives.ToString();
         if (lives <= 0)
         {
@@ -81,10 +113,8 @@ public class PlayerController : MonoBehaviour
         float width = GetComponent<Collider>().bounds.extents.x;
         if (!GameController.instance.gameOver && !GameController.instance.won && !GameController.instance.paused)
         {
-            Vector3 movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);
-            movement = movement.normalized * speed * Time.deltaTime;
-            transform.position += movement;
-            if (Input.GetButton("Shoot") && nextShot >= fireRate)
+            transform.position += new Vector3(movement.x, movement.y, 0).normalized * speed * Time.deltaTime;
+            if (shooting && nextShot >= fireRate)
             {
                 bool foundBulletSpawns = false;
                 nextShot = 0;
@@ -107,7 +137,7 @@ public class PlayerController : MonoBehaviour
                     if (hasIncreasedDamage) newBullet.GetComponent<Renderer>().material.SetColor("_Color", new Color(1, 0.5f, 0));
                     foundBulletSpawns = true;
                 }
-                if (foundBulletSpawns && audioSource)
+                if (audioSource && foundBulletSpawns)
                 {
                     if (fireSound)
                     {
@@ -147,6 +177,16 @@ public class PlayerController : MonoBehaviour
         {
             armor = powerupSettings.shipArmorValue;
         }
+    }
+
+    public void move(Vector2 direction)
+    {
+        movement = direction;
+    }
+
+    public void fire(bool state)
+    {
+        shooting = state;
     }
 
     public void onHit(long damage, bool instakill)

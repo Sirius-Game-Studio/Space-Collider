@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class EndingManager : MonoBehaviour
 {
     [Header("Credits Settings")]
-    [SerializeField] private float creditsPositionY = 600;
+    [Tooltip("The Y position credits start at.")] [SerializeField] private float creditsY = 600;
     [SerializeField] private float creditsScrollSpeed = 0.5f;
 
     [Header("Sound Effects")]
@@ -21,12 +21,15 @@ public class EndingManager : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer = null;
 
     private AudioSource audioSource;
+    private Controls input;
     private bool loading = false;
 
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        input = new Controls();
         if (audioSource) audioSource.ignoreListenerPause = true;
+        loading = false;
         Time.timeScale = 1;
         AudioListener.pause = false;
         if (!PlayerPrefs.HasKey("SoundVolume"))
@@ -49,15 +52,49 @@ public class EndingManager : MonoBehaviour
         creditsMenu.enabled = false;
     }
 
+    void OnEnable()
+    {
+        input.Enable();
+        input.Gameplay.Fullscreen.performed += context => toggleFullscreen();
+        input.Menu.CloseMenu.performed += context => stopCredits();
+    }
+
+    void OnDisable()
+    {
+        input.Disable();
+        input.Gameplay.Fullscreen.performed -= context => toggleFullscreen();
+        input.Menu.CloseMenu.performed -= context => stopCredits();
+    }
+
     void Update()
     {
-        if (!creditsMenu.enabled) credits.anchoredPosition = new Vector2(0, creditsPositionY);
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton1))
+        {
+            creditsMenu.enabled = false;
+            endingMenu.enabled = true;
+        }
+        if (!creditsMenu.enabled) credits.anchoredPosition = new Vector2(0, creditsY);
         if (!loading)
         {
             loadingText.enabled = false;
         } else
         {
             loadingText.enabled = true;
+        }
+    }
+
+    void toggleFullscreen()
+    {
+        Screen.fullScreen = !Screen.fullScreen;
+    }
+
+    void stopCredits()
+    {
+        if (creditsMenu.enabled)
+        {
+            creditsMenu.enabled = false;
+            endingMenu.enabled = true;
+            StopCoroutine(scrollCredits());
         }
     }
 
@@ -107,7 +144,7 @@ public class EndingManager : MonoBehaviour
         {
             yield return new WaitForEndOfFrame();
             if (creditsMenu.enabled) credits.anchoredPosition -= new Vector2(0, creditsScrollSpeed);
-            if (credits.anchoredPosition.y <= -creditsPositionY)
+            if (credits.anchoredPosition.y <= -creditsY)
             {
                 endingMenu.enabled = true;
                 creditsMenu.enabled = false;
