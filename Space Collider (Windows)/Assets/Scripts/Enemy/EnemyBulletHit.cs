@@ -8,7 +8,7 @@ public class EnemyBulletHit : MonoBehaviour
 
     void Start()
     {
-        if (!GameController.instance.isCampaign && GameController.instance.difficulty >= 3) damage = (long)(damage * hardDamageMultiplier);
+        if (!GameController.instance.isCampaignLevel && GameController.instance.difficulty >= 3) damage = (long)(damage * hardDamageMultiplier);
     }
 
     void Update()
