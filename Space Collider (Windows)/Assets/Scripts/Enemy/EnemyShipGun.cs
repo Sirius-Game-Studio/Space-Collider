@@ -18,7 +18,7 @@ public class EnemyShipGun : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        if (!GameController.instance.isCampaign)
+        if (!GameController.instance.isCampaignLevel)
         {
             if (GameController.instance.difficulty <= 1) // Easy
             {
