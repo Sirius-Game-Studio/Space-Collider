@@ -7,7 +7,7 @@ public class ReinforcedPlating : MonoBehaviour
     void Start()
     {
         enemyHealth = GetComponent<EnemyHealth>();
-        if (!GameController.instance.isCampaign && GameController.instance.difficulty >= 4) main();
+        if (!GameController.instance.isCampaignLevel && GameController.instance.difficulty >= 4) main();
     }
 
     void main()
