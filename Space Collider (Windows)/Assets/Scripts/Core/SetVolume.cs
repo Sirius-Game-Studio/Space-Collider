@@ -5,11 +5,12 @@ using UnityEngine.UI;
 public class SetVolume : MonoBehaviour
 {
     [SerializeField] private AudioMixer audioMixer = null;
+    [SerializeField] private Canvas menu = null;
     [SerializeField] private string volume = "";
-    [Tooltip("Xbox/PS Controller only.")] [SerializeField] private bool isBumper = false;
 
     private Slider slider;
-    private KeyCode[] joystickButtons;
+    private bool lowering = false;
+    private bool increasing = false;
 
     void Start()
     {
@@ -21,31 +22,40 @@ public class SetVolume : MonoBehaviour
         {
             slider.value = 1;
         }
-        joystickButtons = new KeyCode[2];
-        if (isBumper) //Xbox is LB & RB, PS is L1 & R1
-        {
-            joystickButtons[0] = KeyCode.JoystickButton4;
-            joystickButtons[1] = KeyCode.JoystickButton5;
-        } else //Xbox is LT & RT, PS is L2 & R2
-        {
-            joystickButtons[0] = KeyCode.JoystickButton6;
-            joystickButtons[1] = KeyCode.JoystickButton7;
-        }
     }
 
     void Update()
     {
-        audioMixer.SetFloat(volume, Mathf.Log10(slider.value) * 20);
-        if (joystickButtons.Length == 2)
+        if (increasing)
         {
-            if (Input.GetKey(joystickButtons[0]))
-            {
-                slider.value -= (float)0.001;
-            } else if (Input.GetKey(joystickButtons[1]))
-            {
-                slider.value += (float)0.001;
-            }
+            slider.value += 0.005f;
+        } else if (lowering)
+        {
+            slider.value -= 0.005f;
         }
+        audioMixer.SetFloat(volume, Mathf.Log10(slider.value) * 20);
+    }
+
+    public void controllerAdjust(bool i, bool l)
+    {
+        if (menu)
+        {
+            if (menu.enabled)
+            {
+                increasing = i;
+                lowering = l;
+            }
+        } else
+        {
+            increasing = i;
+            lowering = l;
+        }
+    }
+
+    public void controllerCancel()
+    {
+        increasing = false;
+        lowering = false;
     }
 
     public void setVolume()
