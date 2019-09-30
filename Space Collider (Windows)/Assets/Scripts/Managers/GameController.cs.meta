@@ -4,24 +4,32 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - enemyShip: {fileID: 7006156074234127389, guid: 152b8240830df8e4e91d8c0436443678,
-      type: 3}
   - gameOverJingle: {fileID: 8300000, guid: fcc69d596e136463999c775beed3baa8, type: 3}
   - winJingle: {fileID: 8300000, guid: 9e615a6ec1e774c0a8bfb003bbfe14ee, type: 3}
   - clickSound: {fileID: 8300000, guid: 1e694d51895cc4416970222f96028f01, type: 3}
+  - gameUIMain: {instanceID: 0}
   - gamePausedUI: {instanceID: 0}
   - gameOverUI: {instanceID: 0}
   - levelCompletedUI: {instanceID: 0}
-  - quitMenuUI: {instanceID: 0}
+  - restartUI: {instanceID: 0}
+  - exitToMainMenuUI: {instanceID: 0}
+  - quitGameUI: {instanceID: 0}
   - settingsUI: {instanceID: 0}
-  - graphicsQualityUI: {instanceID: 0}
-  - soundUI: {instanceID: 0}
-  - livesCount: {instanceID: 0}
-  - scoreCount: {instanceID: 0}
   - levelCount: {instanceID: 0}
+  - scoreCount: {instanceID: 0}
   - waveCount: {instanceID: 0}
+  - soundSlider: {instanceID: 0}
+  - musicSlider: {instanceID: 0}
   - highScoreIndicator: {instanceID: 0}
+  - message: {instanceID: 0}
+  - loadingText: {instanceID: 0}
   - enemyHolder: {instanceID: 0}
+  - shieldGroup: {instanceID: 0}
+  - shieldGroupToRespawn: {fileID: 4392518987477120269, guid: c5c4a94d579bc37428e23aab43cdf19d,
+      type: 3}
+  - enemyShip: {fileID: 7006156074234127389, guid: 152b8240830df8e4e91d8c0436443678,
+      type: 3}
+  - audioMixer: {fileID: 24100000, guid: 52f0e7cad4e412d439f6b23e567f8747, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
