@@ -5,7 +5,7 @@ public class Blink : MonoBehaviour
 {
     void Start()
     {
-        if (!GameController.instance.isCampaign && GameController.instance.difficulty >= 4) StartCoroutine(main());
+        if (!GameController.instance.isCampaignLevel && GameController.instance.difficulty >= 4) StartCoroutine(main());
     }
 
     IEnumerator main()
