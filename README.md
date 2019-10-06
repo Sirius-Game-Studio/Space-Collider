@@ -1,5 +1,5 @@
 # Space Collider
-Welcome to the Space Collider repository!
+Welcome to the Git repository for Space Collider!
 
 # Versions
 The current version for Windows is v0.8.1, which was built with Unity 2019.1.8f1.
